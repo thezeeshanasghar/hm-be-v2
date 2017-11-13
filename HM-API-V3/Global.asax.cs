@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
 
-namespace HM_API_V2
+namespace HM_API_V3
 {
     public class WebApiApplication : System.Web.HttpApplication
     {

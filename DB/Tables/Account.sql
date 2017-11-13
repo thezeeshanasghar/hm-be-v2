@@ -1,0 +1,12 @@
+﻿CREATE TABLE [dbo].[Account]
+(
+	[Id] BIGINT NOT NULL PRIMARY KEY IDENTITY, 
+    [Number] NVARCHAR(50) NOT NULL, 
+    [Name] NVARCHAR(50) NOT NULL, 
+    [MobileNumber] NVARCHAR(50) NOT NULL, 
+    [Email] NVARCHAR(50) NULL, 
+    [CNIC] NVARCHAR(50) NOT NULL, 
+    [Address] NVARCHAR(MAX) NOT NULL, 
+    [Created] DATE NOT NULL, 
+    [Balance] DECIMAL(19, 4) NOT NULL DEFAULT 0.00
+)
