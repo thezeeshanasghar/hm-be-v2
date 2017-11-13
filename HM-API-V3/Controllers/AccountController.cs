@@ -17,9 +17,6 @@ namespace HM_API_V3.Controllers
         {
             try
             {
-                
-
-
                 using (HMEntities1 entities = new HMEntities1())
                 {
                     var dbVaccines = entities.Accounts.ToList();
@@ -30,7 +27,6 @@ namespace HM_API_V3.Controllers
             catch (Exception e)
             {
                 return new Response<IEnumerable<AccountDTO>>(false, GetMessageFromExceptionObject(e), null);
-
             }
         }
 
@@ -48,7 +44,6 @@ namespace HM_API_V3.Controllers
             catch (Exception e)
             {
                 return new Response<AccountDTO>(false, GetMessageFromExceptionObject(e), null);
-
             }
 
         }
@@ -66,13 +61,11 @@ namespace HM_API_V3.Controllers
                     AccountDTO.Id = vaccinedb.Id;
 
                     return new Response<AccountDTO>(true, null, AccountDTO);
-
                 }
             }
             catch (Exception e)
             {
                 return new Response<AccountDTO>(false, GetMessageFromExceptionObject(e), null);
-
             }
         }
         public Response<AccountDTO> Put(int Id, AccountDTO AccountDTO)
@@ -90,7 +83,6 @@ namespace HM_API_V3.Controllers
             catch (Exception e)
             {
                 return new Response<AccountDTO>(false, GetMessageFromExceptionObject(e), null);
-
             }
         }
 
@@ -116,5 +108,29 @@ namespace HM_API_V3.Controllers
         }
 
         #endregion
+
+        [Route("api/account/{id}/transactions")]
+        public Response<IEnumerable<TransactionDTO>> GetDosses(int id)
+        {
+            try
+            {
+                using (HMEntities1 entities = new HMEntities1())
+                {
+                    var account = entities.Accounts.FirstOrDefault(c => c.Id == id);
+                    if (account == null)
+                        return new Response<IEnumerable<TransactionDTO>>(false, "Account not found", null);
+                    else
+                    {
+                        var dbTransactions = account.Transactions.ToList();
+                        var transactionDTOs = Mapper.Map<List<TransactionDTO>>(dbTransactions);
+                        return new Response<IEnumerable<TransactionDTO>>(true, null, transactionDTOs);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Response<IEnumerable<TransactionDTO>>(false, GetMessageFromExceptionObject(ex), null);
+            }
+        }
     }
 }

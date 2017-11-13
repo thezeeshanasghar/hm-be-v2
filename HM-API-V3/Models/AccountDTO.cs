@@ -4,10 +4,6 @@ namespace HM_API_V3.Models
 {
     public class AccountDTO
     {
-        public AccountDTO()
-        {
-            this.Transactions = new HashSet<Transaction>();
-        }
         public long Id { get; set; }
         public string Number { get; set; }
         public string Name { get; set; }
@@ -19,7 +15,6 @@ namespace HM_API_V3.Models
         //[JsonConverter(typeof(OnlyDateConverter))]
         public System.DateTime Created { get; set; }
         public decimal Balance { get; set; }
-
-        public virtual ICollection<Transaction> Transactions { get; set; }
+        
     }
 }
