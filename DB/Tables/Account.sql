@@ -7,6 +7,6 @@
     [Email] NVARCHAR(50) NULL, 
     [CNIC] NVARCHAR(50) NOT NULL, 
     [Address] NVARCHAR(MAX) NOT NULL, 
-    [Created] DATE NOT NULL, 
+    [Created] DATE NOT NULL DEFAULT GetDate() , 
     [Balance] DECIMAL(19, 4) NOT NULL DEFAULT 0.00
 )

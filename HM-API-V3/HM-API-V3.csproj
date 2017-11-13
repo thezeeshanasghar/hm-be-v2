@@ -120,8 +120,11 @@
     <Compile Include="Account.cs">
       <DependentUpon>HMModel.tt</DependentUpon>
     </Compile>
+    <Content Include="App_Code\OnlyDateConverter.cs" />
     <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -141,6 +144,7 @@
       <DependentUpon>HMModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountDTO.cs" />
+    <Compile Include="Models\Response.cs" />
     <Compile Include="Models\TransactionDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transaction.cs">
@@ -163,10 +167,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

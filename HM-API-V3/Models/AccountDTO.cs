@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace HM_API_V3.Models
 {
@@ -18,6 +15,8 @@ namespace HM_API_V3.Models
         public string Email { get; set; }
         public string CNIC { get; set; }
         public string Address { get; set; }
+
+        //[JsonConverter(typeof(OnlyDateConverter))]
         public System.DateTime Created { get; set; }
         public decimal Balance { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HM_API_V3.Models;
 
 namespace HM_API_V3
 {
