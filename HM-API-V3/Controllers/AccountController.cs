@@ -55,10 +55,14 @@ namespace HM_API_V3.Controllers
 
                 using (HMEntities1 entities = new HMEntities1())
                 {
-                    Account vaccinedb = Mapper.Map<Account>(AccountDTO);
-                    entities.Accounts.Add(vaccinedb);
+                    Account accountDB = Mapper.Map<Account>(AccountDTO);
+                    entities.Accounts.Add(accountDB);
                     entities.SaveChanges();
-                    AccountDTO.Id = vaccinedb.Id;
+                    
+                    accountDB = entities.Accounts.Where(x => x.Id == accountDB.Id).FirstOrDefault();
+                    AccountDTO.Id = accountDB.Id;
+                    AccountDTO.Created = accountDB.Created;
+                    AccountDTO.Balance = accountDB.Balance;
 
                     return new Response<AccountDTO>(true, null, AccountDTO);
                 }
@@ -109,14 +113,8 @@ namespace HM_API_V3.Controllers
 
         #endregion
 
-
-       
-
-
-
-
         [Route("api/account/{id}/transactions")]
-        public Response<IEnumerable<TransactionDTO>> GetTransections(int id)
+        public Response<IEnumerable<TransactionDTO>> GetTransactions(int id)
         {
             try
             {
@@ -138,34 +136,6 @@ namespace HM_API_V3.Controllers
                 return new Response<IEnumerable<TransactionDTO>>(false, GetMessageFromExceptionObject(ex), null);
             }
         }
-
-
-        public Response<TransactionDTO> PostTransection(TransactionDTO t)
-        {
-            try
-            {
-                using (HMEntities1 db=new HMEntities1())
-                {
-                    var transection = Mapper.Map<Transaction>(t);
-                    //var transection = new Transaction
-                    //{                    };
-                    db.Transactions.Add(transection);
-                    return new Response<TransactionDTO>(true, "Transection Added", t);
-
-
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                return new Response<TransactionDTO>(false, GetMessageFromExceptionObject(ex), null);
-
-                throw;
-            }
-        }
-
-
-
+        
     }
 }
