@@ -18,6 +18,7 @@ namespace HM_API_V3
         public HMEntities1()
             : base("name=HMEntities1")
         {
+            Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

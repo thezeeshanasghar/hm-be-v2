@@ -13,6 +13,6 @@ namespace HM_API_V3.Models
         public decimal Amount { get; set; }
         public long AccountID { get; set; }
 
-        public virtual Account Account { get; set; }
+        //public virtual Account Account { get; set; }
     }
 }
