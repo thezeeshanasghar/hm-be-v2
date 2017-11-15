@@ -109,8 +109,14 @@ namespace HM_API_V3.Controllers
 
         #endregion
 
+
+       
+
+
+
+
         [Route("api/account/{id}/transactions")]
-        public Response<IEnumerable<TransactionDTO>> GetDosses(int id)
+        public Response<IEnumerable<TransactionDTO>> GetTransections(int id)
         {
             try
             {
@@ -132,5 +138,34 @@ namespace HM_API_V3.Controllers
                 return new Response<IEnumerable<TransactionDTO>>(false, GetMessageFromExceptionObject(ex), null);
             }
         }
+
+
+        public Response<TransactionDTO> PostTransection(TransactionDTO t)
+        {
+            try
+            {
+                using (HMEntities1 db=new HMEntities1())
+                {
+                    var transection = Mapper.Map<Transaction>(t);
+                    //var transection = new Transaction
+                    //{                    };
+                    db.Transactions.Add(transection);
+                    return new Response<TransactionDTO>(true, "Transection Added", t);
+
+
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new Response<TransactionDTO>(false, GetMessageFromExceptionObject(ex), null);
+
+                throw;
+            }
+        }
+
+
+
     }
 }
