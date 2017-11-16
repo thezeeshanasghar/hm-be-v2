@@ -4,7 +4,6 @@
     [Number] NVARCHAR(50) NOT NULL, 
     [Name] NVARCHAR(50) NOT NULL, 
     [MobileNumber] NVARCHAR(50) NOT NULL, 
-    [Email] NVARCHAR(50) NULL, 
     [CNIC] NVARCHAR(50) NOT NULL, 
     [Address] NVARCHAR(MAX) NOT NULL, 
     [Created] DATE NOT NULL DEFAULT GetDate() , 

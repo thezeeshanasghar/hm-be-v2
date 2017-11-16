@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{5374a0e2-2765-4b79-b130-37b72b464816}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql120DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -62,9 +62,6 @@
   <ItemGroup>
     <Build Include="Tables\Account.sql" />
     <Build Include="Tables\Transaction.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="DB.refactorlog" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB.publish.xml" />
