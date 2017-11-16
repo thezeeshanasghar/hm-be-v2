@@ -24,7 +24,6 @@ namespace HM_API_V3
         public string Number { get; set; }
         public string Name { get; set; }
         public string MobileNumber { get; set; }
-        public string Email { get; set; }
         public string CNIC { get; set; }
         public string Address { get; set; }
         public System.DateTime Created { get; set; }

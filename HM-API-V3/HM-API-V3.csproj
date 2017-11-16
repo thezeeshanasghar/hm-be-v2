@@ -124,7 +124,7 @@
     <Compile Include="Transaction.cs">
       <DependentUpon>HMModel.tt</DependentUpon>
     </Compile>
-    <Content Include="App_Code\OnlyDateConverter.cs" />
+    <Compile Include="App_Code\OnlyDateConverter.cs" />
     <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -161,6 +161,7 @@
     <Content Include="HMModel.edmx.diagram">
       <DependentUpon>HMModel.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\Filesystem.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
