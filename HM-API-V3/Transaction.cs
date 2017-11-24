@@ -19,6 +19,7 @@ namespace HM_API_V3
         public System.DateTime Date { get; set; }
         public decimal Amount { get; set; }
         public long AccountID { get; set; }
+        public string Description { get; set; }
     
         public virtual Account Account { get; set; }
     }

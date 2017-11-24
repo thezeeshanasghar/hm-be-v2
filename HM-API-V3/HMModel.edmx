@@ -27,6 +27,7 @@
           <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="Amount" Type="decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="AccountID" Type="bigint" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <Association Name="FK_Transaction_Account">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
@@ -84,6 +85,7 @@
           <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="AccountID" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Account" Relationship="HMModel.FK_Transaction_Account" FromRole="Transaction" ToRole="Account" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Transaction_Account">
           <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
@@ -120,6 +122,7 @@
           <EntitySetMapping Name="Transactions">
             <EntityTypeMapping TypeName="HMModel.Transaction">
               <MappingFragment StoreEntitySet="Transaction">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="AccountID" ColumnName="AccountID" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
