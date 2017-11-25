@@ -7,5 +7,6 @@
     [CNIC] NVARCHAR(50) NOT NULL, 
     [Address] NVARCHAR(MAX) NOT NULL, 
     [Created] DATE NOT NULL DEFAULT GetDate() , 
-    [Balance] DECIMAL(19, 4) NOT NULL DEFAULT 0.00
+    [Balance] DECIMAL(19, 4) NOT NULL DEFAULT 0.00, 
+    CONSTRAINT [CK_Account_Number_Unique] UNIQUE ([Number])
 )

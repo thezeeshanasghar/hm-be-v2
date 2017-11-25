@@ -12,14 +12,23 @@ namespace HM_API_V3.Controllers
 {
     public class TransactionController : BaseController
     {
-        public Response<IEnumerable<TransactionDTO>> GET()
+        public Response<IEnumerable<TransactionDTO>> GET(string year="", string month="")
         {
             try
             {
                 using (HMEntities1 db = new HMEntities1())
                 {
-                    var Transections = db.Transactions.ToList();
-                    IEnumerable<TransactionDTO> transactionDTOs = Mapper.Map<IEnumerable<TransactionDTO>>(Transections);
+                    DateTime now = DateTime.Now;
+
+                    //if(year!=null && month !=null && year > 2000 && year < 3000 && month > 0 && month < 13)
+                    //    now = new DateTime(year.Value, month.Value, 1);
+
+                    var startDate = new DateTime(now.Year, now.Month, 1);
+                    var endDate = startDate.AddMonths(1).AddDays(-1);
+
+                    var transactions = db.Transactions.Where(x=>x.Date>= startDate && x.Date <= endDate).ToList();
+                    IEnumerable<TransactionDTO> transactionDTOs = Mapper.Map<IEnumerable<TransactionDTO>>(transactions);
+
                     return new Response<IEnumerable<TransactionDTO>>(true, null, transactionDTOs);
                 }
             }
