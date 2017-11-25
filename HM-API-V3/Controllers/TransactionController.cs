@@ -59,6 +59,9 @@ namespace HM_API_V3.Controllers
                     entities.Transactions.Add(dbTransaction);
                     entities.SaveChanges();
                     transactionDTO.Id = dbTransaction.Id;
+                    Account c = entities.Accounts.FirstOrDefault(x=>x.Id==dbTransaction.AccountID);
+                    c.Balance += dbTransaction.Amount;
+                    entities.SaveChanges();
 
                     return new Response<TransactionDTO>(true, null, transactionDTO);
                 }
