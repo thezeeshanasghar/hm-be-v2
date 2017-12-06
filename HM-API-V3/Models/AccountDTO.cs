@@ -1,6 +1,7 @@
 ﻿using HM_API_V3.App_Code;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Web;
 
 namespace HM_API_V3.Models
 {
@@ -12,6 +13,7 @@ namespace HM_API_V3.Models
         public string MobileNumber { get; set; }
         public string CNIC { get; set; }
         public string Address { get; set; }
+        public string image { get; set; }
 
         [JsonConverter(typeof(OnlyDateConverter))]
         public System.DateTime Created { get; set; }
