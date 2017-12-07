@@ -160,11 +160,9 @@ namespace HM_API_V3.Controllers
         [Route("~/api/account/DownloadLogPDF/{id}")]
         public HttpResponseMessage DownloadLogPDF(int id)
         {
-            Transaction transaction;
-
             HMEntities1 entities = new HMEntities1();
 
-            transaction = entities.Transactions.Where(x => x.AccountID == id).FirstOrDefault();
+            string Name = entities.Accounts.Where(x => x.Id == id).FirstOrDefault().Name;
 
             var stream = CreateSchedulePdf(id);
 
@@ -175,7 +173,7 @@ namespace HM_API_V3.Controllers
                     Headers = {
                                 ContentType = new MediaTypeHeaderValue("application/pdf"),
                                 ContentDisposition = new ContentDispositionHeaderValue("attachment") {
-                                    FileName = transaction.Account.Name.Replace(" ","")+"_Balance Statement_" +DateTime.Now.ToString("MMMM-dd-yyyy")+ ".pdf"
+                                    FileName = Name.Replace(" ","")+"_BalanceStatement_" +DateTime.Now.ToString("MMMM-dd-yyyy")+ ".pdf"
                                 }
                             }
                 },
