@@ -143,6 +143,18 @@ namespace HM_API_V3.Controllers
             }
         }
 
+        
+        public decimal getRowTotalUsingIndex(int index,long id)
+        {
+            HMEntities1 entities = new HMEntities1();
+            var accounts = entities.Transactions.Where(a => a.AccountID == id).ToList();
+            decimal sum = 0;
+            for (int i = 0; i <= index; i++)
+            {
+                sum += accounts[i].Amount;
+            }
+            return sum;
+        }
         [HttpGet]
         //[Route("~/api/child/{id}/Download-Schedule-PDF")]
         [Route("~/api/account/DownloadLogPDF/{id}")]
@@ -163,7 +175,7 @@ namespace HM_API_V3.Controllers
                     Headers = {
                                 ContentType = new MediaTypeHeaderValue("application/pdf"),
                                 ContentDisposition = new ContentDispositionHeaderValue("attachment") {
-                                    FileName =transaction.Account.Name.Replace(" ","")+"_Schedule_" +DateTime.Now.ToString("MMMM-dd-yyyy")+ ".pdf"
+                                    FileName = transaction.Account.Name.Replace(" ","")+"_Balance Statement_" +DateTime.Now.ToString("MMMM-dd-yyyy")+ ".pdf"
                                 }
                             }
                 },
@@ -236,7 +248,7 @@ namespace HM_API_V3.Controllers
                 writer.CloseStream = false;
 
                 document.Open();
-                GetPDFHeading(document, "History Log");
+                GetPDFHeading(document, "Balance Sheet");
 
                 //Table 1 for description above Schedule table
                 PdfPTable upperTable = new PdfPTable(2);
@@ -245,6 +257,9 @@ namespace HM_API_V3.Controllers
                 upperTable.TotalWidth = 500f;
                 upperTable.LockedWidth = true;
                 upperTable.SetWidths(upperTableWidths);
+                upperTable.AddCell(CreateCell("Date:", "bold", 1, "left", "description"));
+                upperTable.AddCell(CreateCell(DateTime.Now.ToString("MMMM-dd-yyyy").ToString(), "", 1, "right", "description"));
+
 
                 upperTable.AddCell(CreateCell("Name :", "bold", 1, "left", "description"));
                 upperTable.AddCell(CreateCell(account.Name, "", 1, "right", "description"));
@@ -272,11 +287,11 @@ namespace HM_API_V3.Controllers
                 //Schedule Table
                 float[] widths = new float[] { 30f, 100f, 100f, 50f, 50f, 70f, 100f };
 
-                PdfPTable table = new PdfPTable(5);
+                PdfPTable table = new PdfPTable(6);
                 table.HorizontalAlignment = 0;
                 table.TotalWidth = 500f;
                 table.LockedWidth = true;
-               // table.SetWidths(widths);
+                // table.SetWidths(widths);
 
                 table.AddCell(CreateCell("S#", "backgroudLightGray", 1, "center", "scheduleRecords"));
 
@@ -285,7 +300,7 @@ namespace HM_API_V3.Controllers
 
                 table.AddCell(CreateCell("Expense", "backgroudLightGray", 1, "center", "scheduleRecords"));
                 table.AddCell(CreateCell("Income", "backgroudLightGray", 1, "center", "scheduleRecords"));
-                //table.AddCell(CreateCell("Balance", "backgroudLightGray", 1, "center", "scheduleRecords"));
+                table.AddCell(CreateCell("Balance", "backgroudLightGray", 1, "center", "scheduleRecords"));
 
                 // var imgPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Content/img");
 
@@ -310,7 +325,7 @@ namespace HM_API_V3.Controllers
                     if (t.Amount < 0)
                     {
                         table.AddCell(CreateCell(t.Amount.ToString(), "", 1, "", "scheduleRecords"));
-                        
+
                     }
                     else
                     {
@@ -323,13 +338,18 @@ namespace HM_API_V3.Controllers
                     if (t.Amount >= 0)
                     {
                         table.AddCell(CreateCell(t.Amount.ToString(), "", 1, "", "scheduleRecords"));
-                        
+
                     }
                     else
                     {
                         table.AddCell(CreateCell(0.ToString(), "", 1, "", "scheduleRecords"));
 
                     }
+
+                    int index = count - 1;
+                    decimal balance = getRowTotalUsingIndex(index, t.AccountID);
+
+                    table.AddCell(CreateCell(balance.ToString(), "", 1, "", "scheduleRecords"));
 
                     //if (t.Amount < 0)
                     //    table.AddCell(CreateCell(0.ToString(), "", 1, "", "scheduleRecords"));
