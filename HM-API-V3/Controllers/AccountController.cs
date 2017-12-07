@@ -248,7 +248,7 @@ namespace HM_API_V3.Controllers
                 writer.CloseStream = false;
 
                 document.Open();
-                GetPDFHeading(document, "History Log");
+                GetPDFHeading(document, "Balance Sheet");
 
                 //Table 1 for description above Schedule table
                 PdfPTable upperTable = new PdfPTable(2);
