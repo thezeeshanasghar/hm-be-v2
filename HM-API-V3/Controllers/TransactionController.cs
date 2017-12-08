@@ -12,6 +12,9 @@ namespace HM_API_V3.Controllers
 {
     public class TransactionController : BaseController
     {
+        #region C R U D
+
+
         public Response<IEnumerable<TransactionDTO>> GET(string year="", string month="")
         {
             try
@@ -69,9 +72,7 @@ namespace HM_API_V3.Controllers
                     entities.SaveChanges();
                     transactionDTO.Id = dbTransaction.Id;
 
-                    Account c = entities.Accounts.FirstOrDefault(x => x.Id == transactionDTO.AccountID);
-                    c.Balance += transactionDTO.Amount;
-                    entities.SaveChanges();
+                    updateAccountBalance(entities, dbTransaction);
 
                     return new Response<TransactionDTO>(true, null, transactionDTO);
                 }
@@ -90,6 +91,8 @@ namespace HM_API_V3.Controllers
                     var dbTransaction = entities.Transactions.Where(c => c.Id == Id).FirstOrDefault();
                     dbTransaction = Mapper.Map<TransactionDTO, Transaction>(transactionDTO, dbTransaction);
                     entities.SaveChanges();
+                    updateAccountBalance(entities, dbTransaction);
+
                     return new Response<TransactionDTO>(true, null, transactionDTO);
                 }
             }
@@ -98,6 +101,7 @@ namespace HM_API_V3.Controllers
                 return new Response<TransactionDTO>(false, GetMessageFromExceptionObject(e), null);
             }
         }
+
 
         public Response<string> Delete(int Id)
         {
@@ -108,6 +112,8 @@ namespace HM_API_V3.Controllers
                     var dbTransaction = entities.Transactions.Where(c => c.Id == Id).FirstOrDefault();
                     entities.Transactions.Remove(dbTransaction);
                     entities.SaveChanges();
+                    updateAccountBalance(entities, dbTransaction);
+
                     return new Response<string>(true, null, "record deleted");
                 }
             }
@@ -115,6 +121,17 @@ namespace HM_API_V3.Controllers
             {
                 return new Response<string>(false, GetMessageFromExceptionObject(ex), null);
             }
+        }
+
+
+        #endregion
+
+
+        private static void updateAccountBalance(HMEntities1 entities, Transaction dbTransaction)
+        {
+            Account account = dbTransaction.Account;
+            account.Balance = entities.Transactions.Where(c => c.AccountID == account.Id).Sum(x => x.Amount);
+            entities.SaveChanges();
         }
 
     }
