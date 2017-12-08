@@ -85,6 +85,8 @@ namespace HM_API_V3.Controllers
                 using (HMEntities1 entities = new HMEntities1())
                 {
                     var dbVaccine = entities.Accounts.Where(c => c.Id == Id).FirstOrDefault();
+                    if (dbVaccine == null)
+                        return new Response<AccountDTO>(false, "Account not found", null);
                     dbVaccine = Mapper.Map<AccountDTO, Account>(AccountDTO, dbVaccine);
                     entities.SaveChanges();
                     return new Response<AccountDTO>(true, null, AccountDTO);

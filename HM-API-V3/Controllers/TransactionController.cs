@@ -74,6 +74,7 @@ namespace HM_API_V3.Controllers
 
                     updateAccountBalance(entities, dbTransaction);
 
+
                     return new Response<TransactionDTO>(true, null, transactionDTO);
                 }
             }
@@ -89,6 +90,8 @@ namespace HM_API_V3.Controllers
                 using (HMEntities1 entities = new HMEntities1())
                 {
                     var dbTransaction = entities.Transactions.Where(c => c.Id == Id).FirstOrDefault();
+                    if (dbTransaction == null)
+                        return new Response<TransactionDTO>(false, "Transaction not found", null);
                     dbTransaction = Mapper.Map<TransactionDTO, Transaction>(transactionDTO, dbTransaction);
                     entities.SaveChanges();
                     updateAccountBalance(entities, dbTransaction);
@@ -127,10 +130,10 @@ namespace HM_API_V3.Controllers
         #endregion
 
 
-        private static void updateAccountBalance(HMEntities1 entities, Transaction dbTransaction)
+        private void updateAccountBalance(HMEntities1 entities, Transaction dbTransaction)
         {
-            Account account = dbTransaction.Account;
-            account.Balance = entities.Transactions.Where(c => c.AccountID == account.Id).Sum(x => x.Amount);
+            Account account = entities.Accounts.FirstOrDefault(x => x.Id == dbTransaction.AccountID);
+            account.Balance = account.Transactions.Sum(x => x.Amount);
             entities.SaveChanges();
         }
 
