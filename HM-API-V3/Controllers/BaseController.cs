@@ -13,7 +13,8 @@ namespace HM_API_V3.Controllers
         {
             String message = ex.Message;
             message += (ex.InnerException != null) ? ("<br />" + ex.InnerException.Message) : "";
-            message += (ex.InnerException.InnerException != null) ? ("<br />" + ex.InnerException.InnerException.Message) : "";
+            if(ex.InnerException!=null)
+                message += (ex.InnerException.InnerException != null) ? ("<br />" + ex.InnerException.InnerException.Message) : "";
             return message;
         }
     }
