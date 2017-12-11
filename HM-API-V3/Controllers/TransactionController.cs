@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 
 namespace HM_API_V3.Controllers
 {
@@ -26,11 +27,11 @@ namespace HM_API_V3.Controllers
                     if (!String.IsNullOrEmpty(date))
                         now = Convert.ToDateTime(date);
 
-                    var transactions = db.Transactions.Where(x=>x.Date==now).ToList();
+                    var transactions = db.Transactions.Where(x => EntityFunctions.TruncateTime(x.Date) == EntityFunctions.TruncateTime(now)).ToList();
                     IEnumerable<TransactionDTO> transactionDTOs = Mapper.Map<IEnumerable<TransactionDTO>>(transactions);
 
                     obj.Transactions = transactionDTOs.ToList();
-                    obj.PreviousBalance = db.Transactions.Where(x => x.Date != now).Sum(x=>x.Amount);
+                    obj.PreviousBalance = db.Transactions.Where(x => EntityFunctions.TruncateTime(x.Date) != EntityFunctions.TruncateTime(now)).Sum(x=>x.Amount);
 
 
                     return new Response<TransactionWithPreviousBalanceDTO>(true, null, obj);
