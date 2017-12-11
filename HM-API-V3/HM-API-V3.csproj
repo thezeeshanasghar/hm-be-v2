@@ -122,6 +122,7 @@
     </Compile>
     <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Controllers\UploadFileApiController.cs" />
+    <Compile Include="Models\Custom\TransactionWithPreviousBalanceDTO.cs" />
     <Compile Include="Transaction.cs">
       <DependentUpon>HMModel.tt</DependentUpon>
     </Compile>

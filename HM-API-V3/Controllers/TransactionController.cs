@@ -15,8 +15,9 @@ namespace HM_API_V3.Controllers
         #region C R U D
 
 
-        public Response<IEnumerable<TransactionDTO>> GET(string date="")
+        public Response<TransactionWithPreviousBalanceDTO> GET(string date="")
         {
+            TransactionWithPreviousBalanceDTO obj = new TransactionWithPreviousBalanceDTO();
             try
             {
                 using (HMEntities1 db = new HMEntities1())
@@ -28,12 +29,16 @@ namespace HM_API_V3.Controllers
                     var transactions = db.Transactions.Where(x=>x.Date==now).ToList();
                     IEnumerable<TransactionDTO> transactionDTOs = Mapper.Map<IEnumerable<TransactionDTO>>(transactions);
 
-                    return new Response<IEnumerable<TransactionDTO>>(true, null, transactionDTOs);
+                    obj.Transactions = transactionDTOs.ToList();
+                    obj.PreviousBalance = db.Transactions.Where(x => x.Date != now).Sum(x=>x.Amount);
+
+
+                    return new Response<TransactionWithPreviousBalanceDTO>(true, null, obj);
                 }
             }
             catch (Exception ex)
             {
-                return new Response<IEnumerable<TransactionDTO>>(false, GetMessageFromExceptionObject(ex), null);
+                return new Response<TransactionWithPreviousBalanceDTO>(false, GetMessageFromExceptionObject(ex), null);
             }
         }
 
