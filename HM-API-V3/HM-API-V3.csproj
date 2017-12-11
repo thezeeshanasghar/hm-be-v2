@@ -121,6 +121,7 @@
       <DependentUpon>HMModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\TransactionController.cs" />
+    <Compile Include="Controllers\UploadFileApiController.cs" />
     <Compile Include="Transaction.cs">
       <DependentUpon>HMModel.tt</DependentUpon>
     </Compile>
@@ -169,7 +170,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UploadFile\" />
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
@@ -184,7 +187,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>16443</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
