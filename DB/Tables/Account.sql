@@ -8,5 +8,6 @@
     [Address] NVARCHAR(MAX) NOT NULL, 
     [Created] DATE NOT NULL DEFAULT GetDate() , 
     [Balance] DECIMAL(19, 4) NOT NULL DEFAULT 0.00, 
+    [Image] NVARCHAR(150) NULL, 
     CONSTRAINT [CK_Account_Number_Unique] UNIQUE ([Number])
 )
