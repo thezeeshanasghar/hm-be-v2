@@ -28,10 +28,13 @@ namespace HM_API_V3.Controllers
                         now = Convert.ToDateTime(date);
 
                     var transactions = db.Transactions.Where(x => EntityFunctions.TruncateTime(x.Date) == EntityFunctions.TruncateTime(now)).ToList();
-                    IEnumerable<TransactionDTO> transactionDTOs = Mapper.Map<IEnumerable<TransactionDTO>>(transactions);
+                    obj.Transactions = (Mapper.Map<IEnumerable<TransactionDTO>>(transactions)).ToList();
 
-                    obj.Transactions = transactionDTOs.ToList();
-                    obj.PreviousBalance = db.Transactions.Where(x => EntityFunctions.TruncateTime(x.Date) != EntityFunctions.TruncateTime(now)).Sum(x=>x.Amount);
+                    var previousTransactions = db.Transactions.Where(x => EntityFunctions.TruncateTime(x.Date) != EntityFunctions.TruncateTime(now));
+                    if (previousTransactions.Count() == 0)
+                        obj.PreviousBalance = 0;
+                    else
+                        obj.PreviousBalance = previousTransactions.Sum(x => x.Amount);
 
 
                     return new Response<TransactionWithPreviousBalanceDTO>(true, null, obj);
