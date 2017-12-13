@@ -25,7 +25,7 @@ namespace HM_API_V3
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
+        public virtual DbSet<Account> Accounts { get; set; }
     }
 }

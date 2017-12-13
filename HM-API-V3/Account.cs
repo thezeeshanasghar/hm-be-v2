@@ -28,6 +28,7 @@ namespace HM_API_V3
         public string Address { get; set; }
         public System.DateTime Created { get; set; }
         public decimal Balance { get; set; }
+        public string image { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaction> Transactions { get; set; }
