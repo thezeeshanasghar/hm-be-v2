@@ -114,6 +114,7 @@
       <DependentUpon>HMModel.edmx</DependentUpon>
       <LastGenOutput>HMModel.cs</LastGenOutput>
     </Content>
+    <Content Include="UploadFile\no-image.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -171,9 +172,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UploadFile\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
