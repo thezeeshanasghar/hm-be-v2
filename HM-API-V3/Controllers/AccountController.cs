@@ -11,6 +11,9 @@ using System.IO;
 using System.Net.Http.Headers;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Newtonsoft.Json;
+using System.Web.Hosting;
+using System.Diagnostics;
 
 namespace HM_API_V3.Controllers
 {
@@ -53,9 +56,27 @@ namespace HM_API_V3.Controllers
 
         }
 
-        public Response<AccountDTO> Post(AccountDTO AccountDTO)
+        public Response<AccountDTO> Post()
         {
+            var httpRequest = HttpContext.Current.Request;
 
+            var model  = HttpContext.Current.Request.Form.GetValues(0);
+            string jsonContent = model[0];
+            AccountDTO AccountDTO = JsonConvert.DeserializeObject<AccountDTO>(jsonContent);
+
+            if (httpRequest.Files.Count > 0)
+            {
+                foreach (string file in httpRequest.Files)
+                {
+                    var postedFile = httpRequest.Files[file];
+                    var path = "UploadFile/" + DateTime.Now.Ticks + postedFile.FileName;
+                    AccountDTO.image = path;
+                    var filePath = HttpContext.Current.Server.MapPath("~/" + path);
+                    postedFile.SaveAs(filePath);
+                }
+            }
+            else
+                AccountDTO.image = "UploadFile/no-image.png";
             try
             {
 
