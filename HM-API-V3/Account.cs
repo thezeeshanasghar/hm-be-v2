@@ -17,6 +17,8 @@ namespace HM_API_V3
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Account()
         {
+            this.Cars = new HashSet<Car>();
+            this.Cars1 = new HashSet<Car>();
             this.Transactions = new HashSet<Transaction>();
         }
     
@@ -28,8 +30,12 @@ namespace HM_API_V3
         public string Address { get; set; }
         public System.DateTime Created { get; set; }
         public decimal Balance { get; set; }
-        public string image { get; set; }
+        public string Image { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Car> Cars { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Car> Cars1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaction> Transactions { get; set; }
     }

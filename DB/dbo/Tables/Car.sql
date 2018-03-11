@@ -1,0 +1,26 @@
+﻿CREATE TABLE [dbo].[Car] (
+    [Id]                       BIGINT          IDENTITY (1, 1) NOT NULL,
+    [Name]                     NVARCHAR (50)   NOT NULL,
+    [EngineNumber]             NVARCHAR (50)   NULL,
+    [ModelNumber]              NVARCHAR (50)   NULL,
+    [RegistrationNumber]       NVARCHAR (50)   NULL,
+    [Color]                    NVARCHAR (50)   NULL,
+    [Maker]                    NVARCHAR (50)   NULL,
+    [Token]                    NVARCHAR (50)   NULL,
+    [ComputerizedNoPlate]      BIT             CONSTRAINT [DF_Car_ComputerizedNoPlate] DEFAULT ((0)) NOT NULL,
+    [NoOfPapers]               INT             NULL,
+    [SellPrice]                DECIMAL (19, 4) NULL,
+    [SellDate]                 DATE            NULL,
+    [AdvanceAmount]            DECIMAL (19, 4) NULL,
+    [RemainingAmount]          DECIMAL (19, 4) NULL,
+    [DueDateOfRemainingAmount] DATE            NULL,
+    [PurchasePrice]            DECIMAL (19, 4) NULL,
+    [PurchaseDate]             DATE            NULL,
+    [Status]                   NVARCHAR (50)   NULL,
+    [OwnerOneAccountId]        BIGINT          NULL,
+    [OwnerTwoAccountId]        BIGINT          NULL,
+    CONSTRAINT [PK_Car] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Car_Account] FOREIGN KEY ([OwnerOneAccountId]) REFERENCES [dbo].[Account] ([Id]),
+    CONSTRAINT [FK_Car_Account1] FOREIGN KEY ([OwnerTwoAccountId]) REFERENCES [dbo].[Account] ([Id])
+);
+

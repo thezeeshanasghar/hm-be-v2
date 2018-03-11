@@ -17,7 +17,41 @@
           <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Created" Type="date" Nullable="false" />
           <Property Name="Balance" Type="decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="image" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EngineNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModelNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegistrationNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Color" Type="nvarchar" MaxLength="50" />
+          <Property Name="Maker" Type="nvarchar" MaxLength="50" />
+          <Property Name="Token" Type="nvarchar" MaxLength="50" />
+          <Property Name="ComputerizedNoPlate" Type="bit" Nullable="false" />
+          <Property Name="NoOfPapers" Type="int" />
+          <Property Name="SellPrice" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="SellDate" Type="date" />
+          <Property Name="AdvanceAmount" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="RemainingAmount" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="DueDateOfRemainingAmount" Type="date" />
+          <Property Name="PurchasePrice" Type="decimal" Precision="19" Scale="4" />
+          <Property Name="PurchaseDate" Type="date" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="OwnerOneAccountId" Type="bigint" />
+          <Property Name="OwnerTwoAccountId" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Trader">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Commision" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AccountID" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="Transaction">
           <Key>
@@ -30,6 +64,39 @@
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="AccountID" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="Witness">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CNIC" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <Association Name="FK_Car_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Car" Type="Self.Car" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Car">
+              <PropertyRef Name="OwnerOneAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Car_Account1">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Car" Type="Self.Car" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Car">
+              <PropertyRef Name="OwnerTwoAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Transaction_Account">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="Transaction" Type="Self.Transaction" Multiplicity="*" />
@@ -44,7 +111,18 @@
         </Association>
         <EntityContainer Name="HMModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Car" EntityType="Self.Car" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trader" EntityType="Self.Trader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Witness" EntityType="Self.Witness" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Car_Account" Association="Self.FK_Car_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Car" EntitySet="Car" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Car_Account1" Association="Self.FK_Car_Account1">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Car" EntitySet="Car" />
+          </AssociationSet>
           <AssociationSet Name="FK_Transaction_Account" Association="Self.FK_Transaction_Account">
             <End Role="Account" EntitySet="Account" />
             <End Role="Transaction" EntitySet="Transaction" />
@@ -55,25 +133,24 @@
     <edmx:ConceptualModels>
       <Schema Namespace="HMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="HMEntities1" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Transactions" EntityType="HMModel.Transaction" />
           <EntitySet Name="Accounts" EntityType="HMModel.Account" />
+          <EntitySet Name="Cars" EntityType="HMModel.Car" />
+          <EntitySet Name="Traders" EntityType="HMModel.Trader" />
+          <EntitySet Name="Transactions" EntityType="HMModel.Transaction" />
+          <EntitySet Name="Witnesses" EntityType="HMModel.Witness" />
+          <AssociationSet Name="FK_Car_Account" Association="HMModel.FK_Car_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Car" EntitySet="Cars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Car_Account1" Association="HMModel.FK_Car_Account1">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Car" EntitySet="Cars" />
+          </AssociationSet>
           <AssociationSet Name="FK_Transaction_Account" Association="HMModel.FK_Transaction_Account">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="Transaction" EntitySet="Transactions" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Transaction">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Number" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="AccountID" Type="Int64" Nullable="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Account" Relationship="HMModel.FK_Transaction_Account" FromRole="Transaction" ToRole="Account" />
-        </EntityType>
         <EntityType Name="Account">
           <Key>
             <PropertyRef Name="Id" />
@@ -86,9 +163,92 @@
           <Property Name="Address" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Balance" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="image" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Cars" Relationship="HMModel.FK_Car_Account" FromRole="Account" ToRole="Car" />
+          <NavigationProperty Name="Cars1" Relationship="HMModel.FK_Car_Account1" FromRole="Account" ToRole="Car" />
           <NavigationProperty Name="Transactions" Relationship="HMModel.FK_Transaction_Account" FromRole="Account" ToRole="Transaction" />
         </EntityType>
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EngineNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModelNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegistrationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Maker" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Token" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ComputerizedNoPlate" Type="Boolean" Nullable="false" />
+          <Property Name="NoOfPapers" Type="Int32" />
+          <Property Name="SellPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SellDate" Type="DateTime" Precision="0" />
+          <Property Name="AdvanceAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="RemainingAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DueDateOfRemainingAmount" Type="DateTime" Precision="0" />
+          <Property Name="PurchasePrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PurchaseDate" Type="DateTime" Precision="0" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OwnerOneAccountId" Type="Int64" />
+          <Property Name="OwnerTwoAccountId" Type="Int64" />
+          <NavigationProperty Name="Account" Relationship="HMModel.FK_Car_Account" FromRole="Car" ToRole="Account" />
+          <NavigationProperty Name="Account1" Relationship="HMModel.FK_Car_Account1" FromRole="Car" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="Trader">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Commision" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountID" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AccountID" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="HMModel.FK_Transaction_Account" FromRole="Transaction" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="Witness">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CNIC" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Car_Account">
+          <End Type="HMModel.Account" Role="Account" Multiplicity="0..1" />
+          <End Type="HMModel.Car" Role="Car" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Car">
+              <PropertyRef Name="OwnerOneAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Car_Account1">
+          <End Type="HMModel.Account" Role="Account" Multiplicity="0..1" />
+          <End Type="HMModel.Car" Role="Car" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Car">
+              <PropertyRef Name="OwnerTwoAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Transaction_Account">
           <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
           <End Type="HMModel.Transaction" Role="Transaction" Multiplicity="*" />
@@ -101,28 +261,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="HMModelStoreContainer" CdmEntityContainer="HMEntities1">
-          <EntitySetMapping Name="Transactions">
-            <EntityTypeMapping TypeName="HMModel.Transaction">
-              <MappingFragment StoreEntitySet="Transaction">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="HMModel.Account">
               <MappingFragment StoreEntitySet="Account">
-                <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Balance" ColumnName="Balance" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
@@ -130,6 +278,64 @@
                 <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cars">
+            <EntityTypeMapping TypeName="HMModel.Car">
+              <MappingFragment StoreEntitySet="Car">
+                <ScalarProperty Name="OwnerTwoAccountId" ColumnName="OwnerTwoAccountId" />
+                <ScalarProperty Name="OwnerOneAccountId" ColumnName="OwnerOneAccountId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+                <ScalarProperty Name="DueDateOfRemainingAmount" ColumnName="DueDateOfRemainingAmount" />
+                <ScalarProperty Name="RemainingAmount" ColumnName="RemainingAmount" />
+                <ScalarProperty Name="AdvanceAmount" ColumnName="AdvanceAmount" />
+                <ScalarProperty Name="SellDate" ColumnName="SellDate" />
+                <ScalarProperty Name="SellPrice" ColumnName="SellPrice" />
+                <ScalarProperty Name="NoOfPapers" ColumnName="NoOfPapers" />
+                <ScalarProperty Name="ComputerizedNoPlate" ColumnName="ComputerizedNoPlate" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Maker" ColumnName="Maker" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="RegistrationNumber" ColumnName="RegistrationNumber" />
+                <ScalarProperty Name="ModelNumber" ColumnName="ModelNumber" />
+                <ScalarProperty Name="EngineNumber" ColumnName="EngineNumber" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Traders">
+            <EntityTypeMapping TypeName="HMModel.Trader">
+              <MappingFragment StoreEntitySet="Trader">
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Commision" ColumnName="Commision" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="HMModel.Transaction">
+              <MappingFragment StoreEntitySet="Transaction">
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Witnesses">
+            <EntityTypeMapping TypeName="HMModel.Witness">
+              <MappingFragment StoreEntitySet="Witness">
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="CNIC" ColumnName="CNIC" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

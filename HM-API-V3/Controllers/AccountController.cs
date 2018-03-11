@@ -70,13 +70,13 @@ namespace HM_API_V3.Controllers
                 {
                     var postedFile = httpRequest.Files[file];
                     var path = "UploadFile/" + DateTime.Now.Ticks + postedFile.FileName;
-                    AccountDTO.image = path;
+                    AccountDTO.Image = path;
                     var filePath = HttpContext.Current.Server.MapPath("~/" + path);
                     postedFile.SaveAs(filePath);
                 }
             }
             else
-                AccountDTO.image = "UploadFile/no-image.png";
+                AccountDTO.Image = "UploadFile/no-image.png";
             try
             {
 

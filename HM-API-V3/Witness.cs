@@ -12,15 +12,11 @@ namespace HM_API_V3
     using System;
     using System.Collections.Generic;
     
-    public partial class Transaction
+    public partial class Witness
     {
         public long Id { get; set; }
-        public string Number { get; set; }
-        public System.DateTime Date { get; set; }
-        public decimal Amount { get; set; }
-        public string Description { get; set; }
-        public long AccountID { get; set; }
-    
-        public virtual Account Account { get; set; }
+        public string Name { get; set; }
+        public string CNIC { get; set; }
+        public string Image { get; set; }
     }
 }

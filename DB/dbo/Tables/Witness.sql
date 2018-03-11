@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[Witness]
+(
+	[Id] BIGINT NOT NULL PRIMARY KEY, 
+    [Name] NVARCHAR(50) NOT NULL, 
+    [CNIC] NVARCHAR(50) NOT NULL, 
+    [Image] NVARCHAR(150) NULL
+)
