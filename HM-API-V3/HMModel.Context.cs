@@ -30,5 +30,6 @@ namespace HM_API_V3
         public virtual DbSet<Trader> Traders { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<Witness> Witnesses { get; set; }
+        public virtual DbSet<CarAccount> CarAccounts { get; set; }
     }
 }

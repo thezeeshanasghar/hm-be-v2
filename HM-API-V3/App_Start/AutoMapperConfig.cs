@@ -11,6 +11,7 @@ namespace HM_API_V3
             {
                 config.CreateMap<Account, AccountDTO>().ReverseMap();
                 config.CreateMap<Transaction, TransactionDTO>().ReverseMap();
+                config.CreateMap<Car, CarDTO>().ReverseMap();
             });
         }
     }

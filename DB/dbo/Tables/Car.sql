@@ -16,11 +16,9 @@
     [DueDateOfRemainingAmount] DATE            NULL,
     [PurchasePrice]            DECIMAL (19, 4) NULL,
     [PurchaseDate]             DATE            NULL,
-    [Status]                   NVARCHAR (50)   NULL,
-    [OwnerOneAccountId]        BIGINT          NULL,
-    [OwnerTwoAccountId]        BIGINT          NULL,
-    CONSTRAINT [PK_Car] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Car_Account] FOREIGN KEY ([OwnerOneAccountId]) REFERENCES [dbo].[Account] ([Id]),
-    CONSTRAINT [FK_Car_Account1] FOREIGN KEY ([OwnerTwoAccountId]) REFERENCES [dbo].[Account] ([Id])
+    [Status]                   NVARCHAR (50)   NULL, 
+    [Image1] NVARCHAR(150) NULL, 
+    [Image2] NVARCHAR(150) NULL, 
+    CONSTRAINT [PK_Car] PRIMARY KEY ([Id])
 );
 

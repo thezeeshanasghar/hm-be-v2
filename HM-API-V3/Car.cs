@@ -14,6 +14,12 @@ namespace HM_API_V3
     
     public partial class Car
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Car()
+        {
+            this.CarAccounts = new HashSet<CarAccount>();
+        }
+    
         public long Id { get; set; }
         public string Name { get; set; }
         public string EngineNumber { get; set; }
@@ -32,10 +38,10 @@ namespace HM_API_V3
         public Nullable<decimal> PurchasePrice { get; set; }
         public Nullable<System.DateTime> PurchaseDate { get; set; }
         public string Status { get; set; }
-        public Nullable<long> OwnerOneAccountId { get; set; }
-        public Nullable<long> OwnerTwoAccountId { get; set; }
+        public string Image1 { get; set; }
+        public string Image2 { get; set; }
     
-        public virtual Account Account { get; set; }
-        public virtual Account Account1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CarAccount> CarAccounts { get; set; }
     }
 }

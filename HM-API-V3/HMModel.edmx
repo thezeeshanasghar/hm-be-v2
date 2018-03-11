@@ -41,8 +41,17 @@
           <Property Name="PurchasePrice" Type="decimal" Precision="19" Scale="4" />
           <Property Name="PurchaseDate" Type="date" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
-          <Property Name="OwnerOneAccountId" Type="bigint" />
-          <Property Name="OwnerTwoAccountId" Type="bigint" />
+          <Property Name="Image1" Type="nvarchar" MaxLength="150" />
+          <Property Name="Image2" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="CarAccount">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="CarID" Type="bigint" Nullable="false" />
+          <Property Name="OwnerOneAccountID" Type="bigint" Nullable="false" />
+          <Property Name="OwnerTwoAccountID" Type="bigint" />
         </EntityType>
         <EntityType Name="Trader">
           <Key>
@@ -73,27 +82,39 @@
           <Property Name="CNIC" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Image" Type="nvarchar" MaxLength="150" />
         </EntityType>
-        <Association Name="FK_Car_Account">
-          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
-          <End Role="Car" Type="Self.Car" Multiplicity="*" />
+        <Association Name="FK_CarDeal_Account1">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="CarAccount" Type="Self.CarAccount" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Account">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Car">
-              <PropertyRef Name="OwnerOneAccountId" />
+            <Dependent Role="CarAccount">
+              <PropertyRef Name="OwnerOneAccountID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Car_Account1">
+        <Association Name="FK_CarDeal_Account2">
           <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
-          <End Role="Car" Type="Self.Car" Multiplicity="*" />
+          <End Role="CarAccount" Type="Self.CarAccount" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Account">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Car">
-              <PropertyRef Name="OwnerTwoAccountId" />
+            <Dependent Role="CarAccount">
+              <PropertyRef Name="OwnerTwoAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarDeal_Car">
+          <End Role="Car" Type="Self.Car" Multiplicity="1" />
+          <End Role="CarAccount" Type="Self.CarAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarAccount">
+              <PropertyRef Name="CarID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -112,16 +133,21 @@
         <EntityContainer Name="HMModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Car" EntityType="Self.Car" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarAccount" EntityType="Self.CarAccount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trader" EntityType="Self.Trader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Witness" EntityType="Self.Witness" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Car_Account" Association="Self.FK_Car_Account">
+          <AssociationSet Name="FK_CarDeal_Account1" Association="Self.FK_CarDeal_Account1">
             <End Role="Account" EntitySet="Account" />
-            <End Role="Car" EntitySet="Car" />
+            <End Role="CarAccount" EntitySet="CarAccount" />
           </AssociationSet>
-          <AssociationSet Name="FK_Car_Account1" Association="Self.FK_Car_Account1">
+          <AssociationSet Name="FK_CarDeal_Account2" Association="Self.FK_CarDeal_Account2">
             <End Role="Account" EntitySet="Account" />
+            <End Role="CarAccount" EntitySet="CarAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarDeal_Car" Association="Self.FK_CarDeal_Car">
             <End Role="Car" EntitySet="Car" />
+            <End Role="CarAccount" EntitySet="CarAccount" />
           </AssociationSet>
           <AssociationSet Name="FK_Transaction_Account" Association="Self.FK_Transaction_Account">
             <End Role="Account" EntitySet="Account" />
@@ -138,17 +164,22 @@
           <EntitySet Name="Traders" EntityType="HMModel.Trader" />
           <EntitySet Name="Transactions" EntityType="HMModel.Transaction" />
           <EntitySet Name="Witnesses" EntityType="HMModel.Witness" />
-          <AssociationSet Name="FK_Car_Account" Association="HMModel.FK_Car_Account">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="Car" EntitySet="Cars" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Car_Account1" Association="HMModel.FK_Car_Account1">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="Car" EntitySet="Cars" />
-          </AssociationSet>
           <AssociationSet Name="FK_Transaction_Account" Association="HMModel.FK_Transaction_Account">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="Transaction" EntitySet="Transactions" />
+          </AssociationSet>
+          <EntitySet Name="CarAccounts" EntityType="HMModel.CarAccount" />
+          <AssociationSet Name="FK_CarDeal_Account1" Association="HMModel.FK_CarDeal_Account1">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="CarAccount" EntitySet="CarAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarDeal_Account2" Association="HMModel.FK_CarDeal_Account2">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="CarAccount" EntitySet="CarAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarDeal_Car" Association="HMModel.FK_CarDeal_Car">
+            <End Role="Car" EntitySet="Cars" />
+            <End Role="CarAccount" EntitySet="CarAccounts" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Account">
@@ -164,9 +195,9 @@
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Balance" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Cars" Relationship="HMModel.FK_Car_Account" FromRole="Account" ToRole="Car" />
-          <NavigationProperty Name="Cars1" Relationship="HMModel.FK_Car_Account1" FromRole="Account" ToRole="Car" />
           <NavigationProperty Name="Transactions" Relationship="HMModel.FK_Transaction_Account" FromRole="Account" ToRole="Transaction" />
+          <NavigationProperty Name="CarAccounts" Relationship="HMModel.FK_CarDeal_Account1" FromRole="Account" ToRole="CarAccount" />
+          <NavigationProperty Name="CarAccounts1" Relationship="HMModel.FK_CarDeal_Account2" FromRole="Account" ToRole="CarAccount" />
         </EntityType>
         <EntityType Name="Car">
           <Key>
@@ -190,10 +221,9 @@
           <Property Name="PurchasePrice" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="PurchaseDate" Type="DateTime" Precision="0" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="OwnerOneAccountId" Type="Int64" />
-          <Property Name="OwnerTwoAccountId" Type="Int64" />
-          <NavigationProperty Name="Account" Relationship="HMModel.FK_Car_Account" FromRole="Car" ToRole="Account" />
-          <NavigationProperty Name="Account1" Relationship="HMModel.FK_Car_Account1" FromRole="Car" ToRole="Account" />
+          <NavigationProperty Name="CarAccounts" Relationship="HMModel.FK_CarDeal_Car" FromRole="Car" ToRole="CarAccount" />
+          <Property Name="Image1" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Image2" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Trader">
           <Key>
@@ -225,30 +255,6 @@
           <Property Name="CNIC" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
-        <Association Name="FK_Car_Account">
-          <End Type="HMModel.Account" Role="Account" Multiplicity="0..1" />
-          <End Type="HMModel.Car" Role="Car" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Car">
-              <PropertyRef Name="OwnerOneAccountId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Car_Account1">
-          <End Type="HMModel.Account" Role="Account" Multiplicity="0..1" />
-          <End Type="HMModel.Car" Role="Car" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Car">
-              <PropertyRef Name="OwnerTwoAccountId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Transaction_Account">
           <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
           <End Type="HMModel.Transaction" Role="Transaction" Multiplicity="*" />
@@ -258,6 +264,54 @@
             </Principal>
             <Dependent Role="Transaction">
               <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CarAccount">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="CarID" Type="Int64" Nullable="false" />
+          <Property Name="OwnerOneAccountID" Type="Int64" Nullable="false" />
+          <Property Name="OwnerTwoAccountID" Type="Int64" />
+          <NavigationProperty Name="Account" Relationship="HMModel.FK_CarDeal_Account1" FromRole="CarAccount" ToRole="Account" />
+          <NavigationProperty Name="Account1" Relationship="HMModel.FK_CarDeal_Account2" FromRole="CarAccount" ToRole="Account" />
+          <NavigationProperty Name="Car" Relationship="HMModel.FK_CarDeal_Car" FromRole="CarAccount" ToRole="Car" />
+        </EntityType>
+        <Association Name="FK_CarDeal_Account1">
+          <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="HMModel.CarAccount" Role="CarAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarAccount">
+              <PropertyRef Name="OwnerOneAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarDeal_Account2">
+          <End Type="HMModel.Account" Role="Account" Multiplicity="0..1" />
+          <End Type="HMModel.CarAccount" Role="CarAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarAccount">
+              <PropertyRef Name="OwnerTwoAccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarDeal_Car">
+          <End Type="HMModel.Car" Role="Car" Multiplicity="1" />
+          <End Type="HMModel.CarAccount" Role="CarAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarAccount">
+              <PropertyRef Name="CarID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -285,8 +339,8 @@
           <EntitySetMapping Name="Cars">
             <EntityTypeMapping TypeName="HMModel.Car">
               <MappingFragment StoreEntitySet="Car">
-                <ScalarProperty Name="OwnerTwoAccountId" ColumnName="OwnerTwoAccountId" />
-                <ScalarProperty Name="OwnerOneAccountId" ColumnName="OwnerOneAccountId" />
+                <ScalarProperty Name="Image2" ColumnName="Image2" />
+                <ScalarProperty Name="Image1" ColumnName="Image1" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
                 <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
@@ -336,6 +390,16 @@
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="CNIC" ColumnName="CNIC" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarAccounts">
+            <EntityTypeMapping TypeName="HMModel.CarAccount">
+              <MappingFragment StoreEntitySet="CarAccount">
+                <ScalarProperty Name="OwnerTwoAccountID" ColumnName="OwnerTwoAccountID" />
+                <ScalarProperty Name="OwnerOneAccountID" ColumnName="OwnerOneAccountID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
