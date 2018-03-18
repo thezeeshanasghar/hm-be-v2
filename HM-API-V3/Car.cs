@@ -17,7 +17,7 @@ namespace HM_API_V3
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Car()
         {
-            this.CarAccounts = new HashSet<CarAccount>();
+            this.CarOwners = new HashSet<CarOwner>();
         }
     
         public long Id { get; set; }
@@ -30,18 +30,12 @@ namespace HM_API_V3
         public string Token { get; set; }
         public bool ComputerizedNoPlate { get; set; }
         public Nullable<int> NoOfPapers { get; set; }
-        public Nullable<decimal> SellPrice { get; set; }
-        public Nullable<System.DateTime> SellDate { get; set; }
-        public Nullable<decimal> AdvanceAmount { get; set; }
-        public Nullable<decimal> RemainingAmount { get; set; }
-        public Nullable<System.DateTime> DueDateOfRemainingAmount { get; set; }
         public Nullable<decimal> PurchasePrice { get; set; }
         public Nullable<System.DateTime> PurchaseDate { get; set; }
-        public string Status { get; set; }
         public string Image1 { get; set; }
         public string Image2 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CarAccount> CarAccounts { get; set; }
+        public virtual ICollection<CarOwner> CarOwners { get; set; }
     }
 }

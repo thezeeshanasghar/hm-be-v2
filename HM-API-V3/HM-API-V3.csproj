@@ -124,12 +124,14 @@
     <Compile Include="Car.cs">
       <DependentUpon>HMModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="CarAccount.cs">
+    <Compile Include="CarOwner.cs">
       <DependentUpon>HMModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\CarController.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Models\Core\CarDTO.cs" />
+    <Compile Include="Models\Core\CarOwnerDTO.cs" />
+    <Compile Include="Models\Custom\CarInventoryResponseDTO.cs" />
     <Compile Include="Models\Custom\TransactionWithPreviousBalanceDTO.cs" />
     <Compile Include="App_Code\OnlyDateConverter.cs" />
     <Compile Include="App_Start\AutoMapperConfig.cs" />

@@ -6,5 +6,5 @@
     [Amount] DECIMAL(19, 4) NOT NULL, 
 	[Description] NVARCHAR(100) NOT NULL,
     [AccountID] BIGINT NOT NULL, 
-    CONSTRAINT [FK_Transaction_Account] FOREIGN KEY ([AccountID]) REFERENCES [Account]([ID]) 
+    CONSTRAINT [FK_Transaction_Account] FOREIGN KEY ([AccountID]) REFERENCES [Account]([Id]) 
 )

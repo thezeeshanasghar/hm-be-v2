@@ -25,6 +25,11 @@ namespace HM_API_V3.Models
         public System.DateTime Created { get; set; }
 
         public decimal Balance { get; set; }
-        
+
+
+        public virtual ICollection<CarOwnerDTO> CarOwners { get; set; }
+
+        public virtual ICollection<TransactionDTO> Transactions { get; set; }
+
     }
 }

@@ -12,15 +12,13 @@ namespace HM_API_V3
     using System;
     using System.Collections.Generic;
     
-    public partial class CarAccount
+    public partial class CarOwner
     {
         public long Id { get; set; }
         public long CarID { get; set; }
-        public long OwnerOneAccountID { get; set; }
-        public Nullable<long> OwnerTwoAccountID { get; set; }
+        public long AccountID { get; set; }
     
         public virtual Account Account { get; set; }
-        public virtual Account Account1 { get; set; }
         public virtual Car Car { get; set; }
     }
 }
