@@ -14,7 +14,7 @@ namespace HM_API_V3.Controllers
 
         
 
-        public Response<CarDTO> Post()
+        public Response<CarInventoryResponseDTO> Post()
         {
             var httpRequest = HttpContext.Current.Request;
 
@@ -48,12 +48,12 @@ namespace HM_API_V3.Controllers
                     CarDB = entities.Cars.Where(x => x.Id == CarDB.Id).FirstOrDefault();
                     carInventoryResponseDTO.CarDTO.Id = CarDB.Id;
 
-                    return new Response<CarDTO>(true, null, carInventoryResponseDTO.CarDTO);
+                    return new Response<CarInventoryResponseDTO>(true, null, carInventoryResponseDTO.CarDTO);
                 }
             }
             catch (Exception e)
             {
-                return new Response<CarDTO>(false, GetMessageFromExceptionObject(e), null);
+                return new Response<CarInventoryResponseDTO>(false, GetMessageFromExceptionObject(e), null);
             }
         }
      
