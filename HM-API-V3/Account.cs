@@ -17,8 +17,8 @@ namespace HM_API_V3
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Account()
         {
-            this.CarOwners = new HashSet<CarOwner>();
             this.Transactions = new HashSet<Transaction>();
+            this.CarOwners = new HashSet<CarOwner>();
         }
     
         public long Id { get; set; }
@@ -32,8 +32,8 @@ namespace HM_API_V3
         public string Image { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CarOwner> CarOwners { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaction> Transactions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CarOwner> CarOwners { get; set; }
     }
 }

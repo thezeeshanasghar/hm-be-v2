@@ -34,6 +34,7 @@ namespace HM_API_V3
         public Nullable<System.DateTime> PurchaseDate { get; set; }
         public string Image1 { get; set; }
         public string Image2 { get; set; }
+        public string ChasisNumber { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CarOwner> CarOwners { get; set; }

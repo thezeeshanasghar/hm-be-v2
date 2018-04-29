@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,8 +14,10 @@ namespace HM_API_V3.Models
 
         public long AccountID { get; set; }
 
+        [JsonIgnore]
         public virtual AccountDTO Account { get; set; }
 
+        [JsonIgnore]
         public virtual Car Car { get; set; }
     }
 }

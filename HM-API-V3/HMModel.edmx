@@ -28,6 +28,7 @@
           <Property Name="EngineNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="ModelNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="RegistrationNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ChasisNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Color" Type="nvarchar" MaxLength="50" />
           <Property Name="Maker" Type="nvarchar" MaxLength="50" />
           <Property Name="Token" Type="nvarchar" MaxLength="50" />
@@ -42,7 +43,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CarID" Type="bigint" Nullable="false" />
           <Property Name="AccountID" Type="bigint" Nullable="false" />
         </EntityType>
@@ -138,17 +139,17 @@
         <EntityContainer Name="HMEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Accounts" EntityType="HMModel.Account" />
           <EntitySet Name="Cars" EntityType="HMModel.Car" />
-          <EntitySet Name="CarOwners" EntityType="HMModel.CarOwner" />
           <EntitySet Name="Traders" EntityType="HMModel.Trader" />
           <EntitySet Name="Transactions" EntityType="HMModel.Transaction" />
           <EntitySet Name="Witnesses" EntityType="HMModel.Witness" />
-          <AssociationSet Name="FK_CarDeal_Account1" Association="HMModel.FK_CarDeal_Account1">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="CarOwner" EntitySet="CarOwners" />
-          </AssociationSet>
           <AssociationSet Name="FK_Transaction_Account" Association="HMModel.FK_Transaction_Account">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="Transaction" EntitySet="Transactions" />
+          </AssociationSet>
+          <EntitySet Name="CarOwners" EntityType="HMModel.CarOwner" />
+          <AssociationSet Name="FK_CarDeal_Account1" Association="HMModel.FK_CarDeal_Account1">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="CarOwner" EntitySet="CarOwners" />
           </AssociationSet>
           <AssociationSet Name="FK_CarDeal_Car" Association="HMModel.FK_CarDeal_Car">
             <End Role="Car" EntitySet="Cars" />
@@ -168,8 +169,8 @@
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Balance" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CarOwners" Relationship="HMModel.FK_CarDeal_Account1" FromRole="Account" ToRole="CarOwner" />
           <NavigationProperty Name="Transactions" Relationship="HMModel.FK_Transaction_Account" FromRole="Account" ToRole="Transaction" />
+          <NavigationProperty Name="CarOwners" Relationship="HMModel.FK_CarDeal_Account1" FromRole="Account" ToRole="CarOwner" />
         </EntityType>
         <EntityType Name="Car">
           <Key>
@@ -189,17 +190,8 @@
           <Property Name="PurchaseDate" Type="DateTime" Precision="0" />
           <Property Name="Image1" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Image2" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ChasisNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CarOwners" Relationship="HMModel.FK_CarDeal_Car" FromRole="Car" ToRole="CarOwner" />
-        </EntityType>
-        <EntityType Name="CarOwner">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="CarID" Type="Int64" Nullable="false" />
-          <Property Name="AccountID" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="Account" Relationship="HMModel.FK_CarDeal_Account1" FromRole="CarOwner" ToRole="Account" />
-          <NavigationProperty Name="Car" Relationship="HMModel.FK_CarDeal_Car" FromRole="CarOwner" ToRole="Car" />
         </EntityType>
         <EntityType Name="Trader">
           <Key>
@@ -231,18 +223,6 @@
           <Property Name="CNIC" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
-        <Association Name="FK_CarDeal_Account1">
-          <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
-          <End Type="HMModel.CarOwner" Role="CarOwner" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarOwner">
-              <PropertyRef Name="AccountID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Transaction_Account">
           <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
           <End Type="HMModel.Transaction" Role="Transaction" Multiplicity="*" />
@@ -251,6 +231,28 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Transaction">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CarOwner">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarID" Type="Int64" Nullable="false" />
+          <Property Name="AccountID" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="HMModel.FK_CarDeal_Account1" FromRole="CarOwner" ToRole="Account" />
+          <NavigationProperty Name="Car" Relationship="HMModel.FK_CarDeal_Car" FromRole="CarOwner" ToRole="Car" />
+        </EntityType>
+        <Association Name="FK_CarDeal_Account1">
+          <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="HMModel.CarOwner" Role="CarOwner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarOwner">
               <PropertyRef Name="AccountID" />
             </Dependent>
           </ReferentialConstraint>
@@ -291,6 +293,7 @@
           <EntitySetMapping Name="Cars">
             <EntityTypeMapping TypeName="HMModel.Car">
               <MappingFragment StoreEntitySet="Car">
+                <ScalarProperty Name="ChasisNumber" ColumnName="ChasisNumber" />
                 <ScalarProperty Name="Image2" ColumnName="Image2" />
                 <ScalarProperty Name="Image1" ColumnName="Image1" />
                 <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
@@ -304,15 +307,6 @@
                 <ScalarProperty Name="ModelNumber" ColumnName="ModelNumber" />
                 <ScalarProperty Name="EngineNumber" ColumnName="EngineNumber" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CarOwners">
-            <EntityTypeMapping TypeName="HMModel.CarOwner">
-              <MappingFragment StoreEntitySet="CarOwner">
-                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
-                <ScalarProperty Name="CarID" ColumnName="CarID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -345,6 +339,15 @@
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="CNIC" ColumnName="CNIC" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarOwners">
+            <EntityTypeMapping TypeName="HMModel.CarOwner">
+              <MappingFragment StoreEntitySet="CarOwner">
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

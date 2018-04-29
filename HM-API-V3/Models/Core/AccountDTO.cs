@@ -26,8 +26,7 @@ namespace HM_API_V3.Models
 
         public decimal Balance { get; set; }
 
-
-        public virtual ICollection<CarOwnerDTO> CarOwners { get; set; }
+        
 
         public virtual ICollection<TransactionDTO> Transactions { get; set; }
 
