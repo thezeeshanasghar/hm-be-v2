@@ -18,7 +18,7 @@ namespace HM_API_V3
         public Account()
         {
             this.Transactions = new HashSet<Transaction>();
-            this.CarOwners = new HashSet<CarOwner>();
+            this.Cars = new HashSet<Car>();
         }
     
         public long Id { get; set; }
@@ -34,6 +34,6 @@ namespace HM_API_V3
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaction> Transactions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CarOwner> CarOwners { get; set; }
+        public virtual ICollection<Car> Cars { get; set; }
     }
 }

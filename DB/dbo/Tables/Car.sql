@@ -10,8 +10,8 @@
     [Token]                    NVARCHAR (50)   NULL,
     [ComputerizedNoPlate]      BIT             CONSTRAINT [DF_Car_ComputerizedNoPlate] DEFAULT ((0)) NOT NULL,
     [NoOfPapers]               INT             NULL,
-    [PurchasePrice]            DECIMAL (19, 4) NULL,
-    [PurchaseDate]             DATE            NULL,
+    [PurchasePrice]            DECIMAL (19, 4) NOT NULL,
+    [PurchaseDate]             DATE            NOT NULL,
     [Image1] NVARCHAR(150) NULL, 
     [Image2] NVARCHAR(150) NULL, 
     CONSTRAINT [PK_Car] PRIMARY KEY ([Id])

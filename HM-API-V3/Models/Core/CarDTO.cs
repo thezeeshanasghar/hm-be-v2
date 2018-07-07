@@ -8,6 +8,10 @@ namespace HM_API_V3.Models
 {
     public class CarDTO
     {
+        public CarDTO()
+        {
+            this.Accounts = new HashSet<AccountDTO>();
+        }
         public long Id { get; set; }
         public string Name { get; set; }
         public string EngineNumber { get; set; }
@@ -19,12 +23,13 @@ namespace HM_API_V3.Models
         public string Token { get; set; }
         public bool ComputerizedNoPlate { get; set; }
         public int? NoOfPapers { get; set; }
-        public decimal? PurchasePrice { get; set; }
-        public DateTime? PurchaseDate { get; set; }
+        public decimal PurchasePrice { get; set; }
+        public System.DateTime PurchaseDate { get; set; }
         public string Image1 { get; set; }
         public string Image2 { get; set; }
 
-        [JsonIgnore]
-        public virtual ICollection<CarOwnerDTO> CarOwners { get; set; }
+        public virtual ICollection<AccountDTO> Accounts { internal get; set; }
+
+
     }
 }

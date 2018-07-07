@@ -17,11 +17,11 @@ namespace HM_API_V3.Models
         public System.DateTime Date { get; set; }
 
         public decimal Amount { get; set; }
+        public string Description { get; set; }
 
         public long AccountID { get; set; }
 
-        public string Description { get; set; }
-
-        //public virtual Account Account { get; set; }
+        [JsonIgnore]
+        public virtual Account Account { get; set; }
     }
 }

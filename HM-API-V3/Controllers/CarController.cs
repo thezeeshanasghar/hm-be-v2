@@ -33,6 +33,18 @@ namespace HM_API_V3.Controllers
             return new Response<IEnumerable<CarInventoryResponseDTO>>(true, null, list);
         }
 
+        public Response<IEnumerable<CarDTO>> Get(string OwnerID1, string OwnerID2)
+        {
+            if(!String.IsNullOrEmpty(OwnerID1))
+            {
+                using (HMEntities1 entities = new HMEntities1())
+                {
+                    Account ac = entities.Accounts.FirstOrDefault(x => x.Id == Convert.ToInt32(OwnerID1));
+                    //List<Car> cars = ac.car
+                }
+            }
+            return null;
+        }
 
         public Response<CarInventoryResponseDTO> Post()
         {
@@ -66,6 +78,10 @@ namespace HM_API_V3.Controllers
                     entities.SaveChanges();
 
                     carInventoryResponseDTO.CarDTO.Id = CarDB.Id;
+                    decimal purchasePrice = -1.0m * carInventoryResponseDTO.CarDTO.PurchasePrice;
+
+                    if (carInventoryResponseDTO.CarOwnerDTOs.Count == 2)
+                        purchasePrice /= 2;
                     foreach (var co in carInventoryResponseDTO.CarOwnerDTOs)
                     {
                         CarOwner coDB = Mapper.Map<CarOwner>(co);
@@ -75,6 +91,19 @@ namespace HM_API_V3.Controllers
                         entities.SaveChanges();
                         co.CarID = CarDB.Id;
                         co.Id = coDB.Id;
+
+                        Account account = entities.Accounts.FirstOrDefault(x=> x.Id == coDB.AccountID);
+                        Transaction transaction = new Transaction()
+                        {
+                            AccountID = account.Id,
+                            Amount = purchasePrice,
+                            Date = DateTime.Now,
+                            Number = Guid.NewGuid().ToString(),
+                            Description = "CAR_PURCHASE_" + CarDB.RegistrationNumber
+                        };
+                        entities.Transactions.Add(transaction);
+                        updateAccountBalance(entities, transaction);
+                        entities.SaveChanges();
                     }
                     return new Response<CarInventoryResponseDTO>(true, null, carInventoryResponseDTO);
                 }
@@ -102,7 +131,12 @@ namespace HM_API_V3.Controllers
         }
 
         #endregion
-
+        private void updateAccountBalance(HMEntities1 entities, Transaction dbTransaction)
+        {
+            Account account = entities.Accounts.FirstOrDefault(x => x.Id == dbTransaction.AccountID);
+            account.Balance = account.Transactions.Sum(x => x.Amount);
+            entities.SaveChanges();
+        }
 
 
 

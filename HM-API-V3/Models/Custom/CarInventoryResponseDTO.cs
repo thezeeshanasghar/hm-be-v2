@@ -9,6 +9,6 @@ namespace HM_API_V3.Models
     {
         public CarDTO CarDTO { get; set; }
 
-        public List<CarOwnerDTO> CarOwnerDTOs { get; set; }
+       // public List<CarOwnerDTO> CarOwnerDTOs { get; set; }
     }
 }
