@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DB", "DB\DB.sqlproj", "{5374A0E2-2765-4B79-B130-37B72B464816}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HM-API-V3", "HM-API-V3\HM-API-V3.csproj", "{71280604-3BCD-4206-9863-0B82B7993D92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HM-API-V4", "HM-API-V4\HM-API-V4.csproj", "{F94325EE-43ED-47C1-9952-F4F9006589BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +19,10 @@ Global
 		{5374A0E2-2765-4B79-B130-37B72B464816}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5374A0E2-2765-4B79-B130-37B72B464816}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5374A0E2-2765-4B79-B130-37B72B464816}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{71280604-3BCD-4206-9863-0B82B7993D92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71280604-3BCD-4206-9863-0B82B7993D92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71280604-3BCD-4206-9863-0B82B7993D92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71280604-3BCD-4206-9863-0B82B7993D92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F94325EE-43ED-47C1-9952-F4F9006589BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F94325EE-43ED-47C1-9952-F4F9006589BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F94325EE-43ED-47C1-9952-F4F9006589BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F94325EE-43ED-47C1-9952-F4F9006589BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
