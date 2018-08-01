@@ -120,11 +120,8 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
           <EntitySet Name="Trader" EntityType="Self.Trader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Witness" EntityType="Self.Witness" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CarOwner" EntityType="Self.CarOwner" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [CarOwner].[CarID] AS [CarID], 
-    [CarOwner].[AccountID] AS [AccountID]
-    FROM [dbo].[CarOwner] AS [CarOwner]</DefiningQuery>
+          <EntitySet Name="CarOwner" EntityType="Self.CarOwner" store:Type="Tables" Schema="dbo">
+            
           </EntitySet>
           <AssociationSet Name="FK_CarOwner_Account" Association="Self.FK_CarOwner_Account">
             <End Role="Account" EntitySet="Account" />

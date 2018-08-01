@@ -28,7 +28,8 @@ namespace HM_API_V4.Models
         public string Image1 { get; set; }
         public string Image2 { get; set; }
 
-        public virtual ICollection<AccountDTO> Accounts { internal get; set; }
+        public virtual ICollection<AccountDTO> Accounts { get; set; }
+        public  List<AccountDTO> Owners { get; set; }
 
 
     }

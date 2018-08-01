@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using HM_API_V4;
+using HM_API_V4.Models;
+using AutoMapper;
 
 namespace HM_API_V4.Controllers
 {
@@ -71,18 +73,25 @@ namespace HM_API_V4.Controllers
         }
 
         // POST: api/Car
-        [ResponseType(typeof(Car))]
-        public IHttpActionResult PostCar(Car car)
+        [ResponseType(typeof(CarDTO))]
+        public HttpResponseMessage PostCar(CarDTO obj)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                var dbCar = Mapper.Map<Car>(obj);
+                foreach(var account in obj.Owners)
+                {
+                    Account dbAccount = db.Accounts.FirstOrDefault(s => s.Id == account.Id);
+                    dbCar.Accounts.Add(dbAccount);
+                } 
+                db.Cars.Add(dbCar);
+                db.SaveChanges();
+                return Request.CreateResponse(HttpStatusCode.OK, obj);
             }
-
-            db.Cars.Add(car);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = car.Id }, car);
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
         }
 
         // DELETE: api/Car/5
