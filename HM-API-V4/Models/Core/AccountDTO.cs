@@ -35,9 +35,10 @@ namespace HM_API_V4.Models
 
         public string Image { get; set; }
 
-
-
+        [JsonIgnore]
         public virtual ICollection<TransactionDTO> Transactions { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<CarDTO> Cars { get; set; }
 
     }

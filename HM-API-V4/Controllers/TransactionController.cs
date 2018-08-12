@@ -17,8 +17,9 @@ namespace HM_API_V4.Controllers
         #region C R U D
 
 
-        public Response<TransactionWithPreviousBalanceDTO> GET(string date="")
+        public Response<TransactionWithPreviousBalanceDTO> GET(int accountId=0, string date="")
         {
+            //TODO: return data should entertain accountId parameter as well
             TransactionWithPreviousBalanceDTO obj = new TransactionWithPreviousBalanceDTO();
             try
             {
