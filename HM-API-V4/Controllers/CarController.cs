@@ -86,6 +86,7 @@ namespace HM_API_V4.Controllers
                 } 
                 db.Cars.Add(dbCar);
                 db.SaveChanges();
+                obj.Id = dbCar.Id;
                 return Request.CreateResponse(HttpStatusCode.OK, obj);
             }
             catch (Exception ex)
