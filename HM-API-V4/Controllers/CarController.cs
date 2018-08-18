@@ -19,24 +19,25 @@ namespace HM_API_V4.Controllers
         private HMEntities1 db = new HMEntities1();
 
         // GET: api/Car
-        public IQueryable<Car> GetCars()
+        public IEnumerable<CarDTO> GetCars()
         {
-            //TODO: Accounts with cars and send dtos
-            return db.Cars;
+            var dbCars = db.Cars.ToList();
+            List<CarDTO> carDTOs = Mapper.Map<List<CarDTO>>(dbCars);
+            return carDTOs;
         }
 
         // GET: api/Car/5
-        [ResponseType(typeof(Car))]
+        [ResponseType(typeof(CarDTO))]
         public IHttpActionResult GetCar(long id)
         {
             //TODO: Single car with accounts
-            Car car = db.Cars.Find(id);
-            if (car == null)
+            CarDTO carDto = Mapper.Map<CarDTO>(db.Cars.Find(id));
+            if (carDto == null)
             {
                 return NotFound();
             }
 
-            return Ok(car);
+            return Ok(carDto);
         }
 
         // PUT: api/Car/5
