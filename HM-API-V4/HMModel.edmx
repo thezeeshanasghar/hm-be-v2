@@ -38,9 +38,10 @@
           <Property Name="PurchaseDate" Type="date" Nullable="false" />
           <Property Name="Image1" Type="nvarchar" MaxLength="150" />
           <Property Name="Image2" Type="nvarchar" MaxLength="150" />
+          <Property Name="ReceiptNumber" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'HM1.dbo.CarOwner' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CarOwner">
           <Key>
             <PropertyRef Name="CarID" />
@@ -120,8 +121,11 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
           <EntitySet Name="Trader" EntityType="Self.Trader" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Witness" EntityType="Self.Witness" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CarOwner" EntityType="Self.CarOwner" store:Type="Tables" Schema="dbo">
-            
+          <EntitySet Name="CarOwner" EntityType="Self.CarOwner" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CarOwner].[CarID] AS [CarID], 
+    [CarOwner].[AccountID] AS [AccountID]
+    FROM [dbo].[CarOwner] AS [CarOwner]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_CarOwner_Account" Association="Self.FK_CarOwner_Account">
             <End Role="Account" EntitySet="Account" />
@@ -143,7 +147,9 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
         <EntityContainer Name="HMEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Accounts" EntityType="HMModel.Account" />
           <EntitySet Name="Cars" EntityType="HMModel.Car" />
+          <EntitySet Name="Traders" EntityType="HMModel.Trader" />
           <EntitySet Name="Transactions" EntityType="HMModel.Transaction" />
+          <EntitySet Name="Witnesses" EntityType="HMModel.Witness" />
           <AssociationSet Name="FK_Transaction_Account" Association="HMModel.FK_Transaction_Account">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="Transaction" EntitySet="Transactions" />
@@ -152,8 +158,6 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
             <End Role="Account" EntitySet="Accounts" />
             <End Role="Car" EntitySet="Cars" />
           </AssociationSet>
-          <EntitySet Name="Traders" EntityType="HMModel.Trader" />
-          <EntitySet Name="Witnesses" EntityType="HMModel.Witness" />
         </EntityContainer>
         <EntityType Name="Account">
           <Key>
@@ -190,7 +194,17 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
           <Property Name="PurchaseDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Image1" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Image2" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ReceiptNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Accounts" Relationship="HMModel.CarOwner" FromRole="Car" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="Trader">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Commision" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountID" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="Transaction">
           <Key>
@@ -203,6 +217,15 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
           <Property Name="Description" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="AccountID" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Account" Relationship="HMModel.FK_Transaction_Account" FromRole="Transaction" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="Witness">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CNIC" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Transaction_Account">
           <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
@@ -220,24 +243,6 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
           <End Type="HMModel.Account" Role="Account" Multiplicity="*" />
           <End Type="HMModel.Car" Role="Car" Multiplicity="*" />
         </Association>
-        <EntityType Name="Trader">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="Commision" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AccountID" Type="Int64" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Witness">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CNIC" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -262,6 +267,7 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
           <EntitySetMapping Name="Cars">
             <EntityTypeMapping TypeName="HMModel.Car">
               <MappingFragment StoreEntitySet="Car">
+                <ScalarProperty Name="ReceiptNumber" ColumnName="ReceiptNumber" />
                 <ScalarProperty Name="Image2" ColumnName="Image2" />
                 <ScalarProperty Name="Image1" ColumnName="Image1" />
                 <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
@@ -280,6 +286,16 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Traders">
+            <EntityTypeMapping TypeName="HMModel.Trader">
+              <MappingFragment StoreEntitySet="Trader">
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Commision" ColumnName="Commision" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Transactions">
             <EntityTypeMapping TypeName="HMModel.Transaction">
               <MappingFragment StoreEntitySet="Transaction">
@@ -288,24 +304,6 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="CarOwner" TypeName="HMModel.CarOwner" StoreEntitySet="CarOwner">
-            <EndProperty Name="Car">
-              <ScalarProperty Name="Id" ColumnName="CarID" />
-            </EndProperty>
-            <EndProperty Name="Account">
-              <ScalarProperty Name="Id" ColumnName="AccountID" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="Traders">
-            <EntityTypeMapping TypeName="HMModel.Trader">
-              <MappingFragment StoreEntitySet="Trader">
-                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Commision" ColumnName="Commision" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -320,6 +318,14 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="CarOwner" TypeName="HMModel.CarOwner" StoreEntitySet="CarOwner">
+            <EndProperty Name="Car">
+              <ScalarProperty Name="Id" ColumnName="CarID" />
+            </EndProperty>
+            <EndProperty Name="Account">
+              <ScalarProperty Name="Id" ColumnName="AccountID" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

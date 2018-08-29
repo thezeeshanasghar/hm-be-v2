@@ -14,6 +14,7 @@
     [PurchaseDate]             DATE            NOT NULL,
     [Image1] NVARCHAR(150) NULL, 
     [Image2] NVARCHAR(150) NULL, 
+    [ReceiptNumber] NVARCHAR(50) NULL, 
     CONSTRAINT [PK_Car] PRIMARY KEY ([Id])
 );
 

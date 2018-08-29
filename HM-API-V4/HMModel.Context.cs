@@ -27,8 +27,8 @@ namespace HM_API_V4
     
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Car> Cars { get; set; }
-        public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<Trader> Traders { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<Witness> Witnesses { get; set; }
     }
 }

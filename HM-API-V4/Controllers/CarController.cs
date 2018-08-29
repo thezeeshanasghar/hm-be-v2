@@ -84,16 +84,15 @@ namespace HM_API_V4.Controllers
                 var dbCar = Mapper.Map<Car>(obj);
                 foreach(var account in obj.Owners)
                 {
-                    Transaction dbTransaction = new Transaction();
+                    //Transaction dbTransaction = new Transaction();
                     Account dbAccount = db.Accounts.FirstOrDefault(s => s.Id == account.Id);
                     dbCar.Accounts.Add(dbAccount);
-                    //
-                    dbTransaction.AccountID = account.Id;
-                    dbTransaction.Date = DateTime.Now;
-                    dbTransaction.Amount = dbCar.PurchasePrice;
-                    dbTransaction.Number = dbCar.RegistrationNumber;
-                    dbTransaction.Description = "test";
-                    db.Transactions.Add(dbTransaction);
+                    //dbTransaction.AccountID = account.Id;
+                    //dbTransaction.Date = DateTime.Now;
+                    //dbTransaction.Amount = dbCar.PurchasePrice;
+                    //dbTransaction.Number = dbCar.RegistrationNumber;
+                    //dbTransaction.Description = "test";
+                    //db.Transactions.Add(dbTransaction);
                 } 
                 db.Cars.Add(dbCar);
                 db.SaveChanges();
