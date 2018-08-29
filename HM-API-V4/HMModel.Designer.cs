@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\NBLHRZEESHAN\Documents\Visual Studio 2015\Projects\new\hm-be-v2\HM-API-V4\HMModel.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\documents\Projects\AFZ_Sol\hussain motors\hm-be-v2\HM-API-V4\HMModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
