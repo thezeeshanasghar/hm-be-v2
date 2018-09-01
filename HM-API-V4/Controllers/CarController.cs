@@ -17,7 +17,7 @@ namespace HM_API_V4.Controllers
     public class CarController : ApiController
     {
         private HMEntities1 db = new HMEntities1();
-
+        #region C R U D
         // GET: api/Car
         public IEnumerable<CarDTO> GetCars()
         {
@@ -131,9 +131,24 @@ namespace HM_API_V4.Controllers
             base.Dispose(disposing);
         }
 
+        #endregion
         private bool CarExists(long id)
         {
             return db.Cars.Count(e => e.Id == id) > 0;
+        }
+
+        [Route("api/car/{accountId}/account")]
+        public IHttpActionResult GetCarByAccountId(int accountId)
+        {
+            var ownerCars = db.Cars.Where(x => x.Accounts.Any(a => a.Id == accountId)).ToList();
+            var selfCars = ownerCars.Where(x => x.Accounts.Count == 1).ToList();
+            List<CarDTO> carDto = Mapper.Map<List<CarDTO>>(selfCars);
+            if (carDto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(carDto);
         }
     }
 }
