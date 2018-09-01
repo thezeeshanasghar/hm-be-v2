@@ -137,12 +137,26 @@ namespace HM_API_V4.Controllers
             return db.Cars.Count(e => e.Id == id) > 0;
         }
 
-        [Route("api/car/{accountId}/account")]
+        [Route("api/car/account/{accountId}")]
         public IHttpActionResult GetCarByAccountId(int accountId)
         {
             var ownerCars = db.Cars.Where(x => x.Accounts.Any(a => a.Id == accountId)).ToList();
             var selfCars = ownerCars.Where(x => x.Accounts.Count == 1).ToList();
             List<CarDTO> carDto = Mapper.Map<List<CarDTO>>(selfCars);
+            if (carDto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(carDto);
+        }
+
+        [Route("api/car/account/{owner1Id}/{owner2Id}")]
+        public IHttpActionResult GetSharedCars(int owner1Id, int owner2Id)
+        {
+            //var accountIds = db.Accounts.Where(x => x.Id == owner1Id && x.Id == owner2Id).Select(x => x.Id).ToList();
+            var ownerCars = db.Cars.Where(x =>  (x.Accounts.Any(y=> y.Id== owner1Id) && x.Accounts.Any(y => y.Id == owner2Id))).ToList();
+            List<CarDTO> carDto = Mapper.Map<List<CarDTO>>(ownerCars);
             if (carDto == null)
             {
                 return NotFound();
