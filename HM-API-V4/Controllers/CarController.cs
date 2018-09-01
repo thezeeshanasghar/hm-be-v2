@@ -11,10 +11,12 @@ using System.Web.Http.Description;
 using HM_API_V4;
 using HM_API_V4.Models;
 using AutoMapper;
+using System.Web;
+using Newtonsoft.Json;
 
 namespace HM_API_V4.Controllers
 {
-    public class CarController : ApiController
+    public class CarController : BaseController
     {
         private HMEntities1 db = new HMEntities1();
         #region C R U D
@@ -75,35 +77,83 @@ namespace HM_API_V4.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Car
-        [ResponseType(typeof(CarDTO))]
-        public HttpResponseMessage PostCar(CarDTO obj)
+        //// POST: api/Car
+        //[ResponseType(typeof(CarDTO))]
+        //public HttpResponseMessage PostCar(CarDTO obj)
+        //{
+        //    try
+        //    {
+        //        var dbCar = Mapper.Map<Car>(obj);
+        //        foreach (var account in obj.Owners)
+        //        {
+        //            //Transaction dbTransaction = new Transaction();
+        //            Account dbAccount = db.Accounts.FirstOrDefault(s => s.Id == account.Id);
+        //            dbCar.Accounts.Add(dbAccount);
+        //            //dbTransaction.AccountID = account.Id;
+        //            //dbTransaction.Date = DateTime.Now;
+        //            //dbTransaction.Amount = dbCar.PurchasePrice;
+        //            //dbTransaction.Number = dbCar.RegistrationNumber;
+        //            //dbTransaction.Description = "test";
+        //            //db.Transactions.Add(dbTransaction);
+        //        }
+        //        db.Cars.Add(dbCar);
+        //        db.SaveChanges();
+        //        obj.Id = dbCar.Id;
+        //        obj.Owners = Mapper.Map<List<AccountDTO>>(dbCar.Accounts);
+        //        return Request.CreateResponse(HttpStatusCode.OK, obj);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+        //    }
+        //}
+
+        public Response<CarDTO> Post()
         {
             try
             {
-                var dbCar = Mapper.Map<Car>(obj);
-                foreach(var account in obj.Owners)
+                var httpRequest = HttpContext.Current.Request;
+                var model = HttpContext.Current.Request.Form.GetValues(0);
+                string jsonContent = model[0];
+                CarDTO carDTO = JsonConvert.DeserializeObject<CarDTO>(jsonContent);
+
+                if (httpRequest.Files.Count > 0)
                 {
-                    //Transaction dbTransaction = new Transaction();
+                    int i = 0;
+                    foreach (string file in httpRequest.Files)
+                    {
+                        i++;
+                        var postedFile = httpRequest.Files[file];
+                        var path = "UploadFile/" + DateTime.Now.Ticks + postedFile.FileName;
+                        if (i == 1)
+                        {
+                            carDTO.Image1 = path;
+                        }
+                        else if (i == 2)
+                        {
+                            carDTO.Image2 = path;
+                        }
+                        var filePath = HttpContext.Current.Server.MapPath("~/" + path);
+                        postedFile.SaveAs(filePath);
+                    }
+                }
+                var dbCar = Mapper.Map<Car>(carDTO);
+                foreach (var account in carDTO.Owners)
+                {
                     Account dbAccount = db.Accounts.FirstOrDefault(s => s.Id == account.Id);
-                    dbCar.Accounts.Add(dbAccount);
-                    //dbTransaction.AccountID = account.Id;
-                    //dbTransaction.Date = DateTime.Now;
-                    //dbTransaction.Amount = dbCar.PurchasePrice;
-                    //dbTransaction.Number = dbCar.RegistrationNumber;
-                    //dbTransaction.Description = "test";
-                    //db.Transactions.Add(dbTransaction);
-                } 
+                    dbCar.Accounts.Add(dbAccount); 
+                }
                 db.Cars.Add(dbCar);
                 db.SaveChanges();
-                obj.Id = dbCar.Id;
-                obj.Owners =Mapper.Map<List<AccountDTO>>(dbCar.Accounts);
-                return Request.CreateResponse(HttpStatusCode.OK, obj);
+                carDTO.Id = dbCar.Id;
+                carDTO.Owners = Mapper.Map<List<AccountDTO>>(dbCar.Accounts);
+                return new Response<CarDTO>(true, null, carDTO);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                return new Response<CarDTO>(false, GetMessageFromExceptionObject(e), null);
             }
+
         }
 
         // DELETE: api/Car/5
@@ -155,7 +205,7 @@ namespace HM_API_V4.Controllers
         public IHttpActionResult GetSharedCars(int owner1Id, int owner2Id)
         {
             //var accountIds = db.Accounts.Where(x => x.Id == owner1Id && x.Id == owner2Id).Select(x => x.Id).ToList();
-            var ownerCars = db.Cars.Where(x =>  (x.Accounts.Any(y=> y.Id== owner1Id) && x.Accounts.Any(y => y.Id == owner2Id))).ToList();
+            var ownerCars = db.Cars.Where(x => (x.Accounts.Any(y => y.Id == owner1Id) && x.Accounts.Any(y => y.Id == owner2Id))).ToList();
             List<CarDTO> carDto = Mapper.Map<List<CarDTO>>(ownerCars);
             if (carDto == null)
             {
