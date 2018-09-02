@@ -124,7 +124,7 @@ namespace HM_API_V4.Controllers
                     {
                         i++;
                         var postedFile = httpRequest.Files[file];
-                        var path = "UploadFile/" + DateTime.Now.Ticks + postedFile.FileName;
+                        var path = "UploadFile/" + DateTime.Now.Ticks + "-" + postedFile.FileName;
                         if (i == 1)
                         {
                             carDTO.Image1 = path;
@@ -138,15 +138,24 @@ namespace HM_API_V4.Controllers
                     }
                 }
                 var dbCar = Mapper.Map<Car>(carDTO);
-                foreach (var account in carDTO.Owners)
-                {
-                    Account dbAccount = db.Accounts.FirstOrDefault(s => s.Id == account.Id);
-                    dbCar.Accounts.Add(dbAccount); 
-                }
+                dbCar.Accounts.Clear();
+                //foreach (var account in carDTO.Accounts)
+                //{
+                //    Account dbAccount = db.Accounts.FirstOrDefault(s => s.Id == account.Id);
+                //    dbAccount.Cars.Add(dbCar);
+                //   // dbCar.Accounts.Add(dbAccount); 
+                //}
                 db.Cars.Add(dbCar);
                 db.SaveChanges();
                 carDTO.Id = dbCar.Id;
-                carDTO.Owners = Mapper.Map<List<AccountDTO>>(dbCar.Accounts);
+                foreach (var account in carDTO.Accounts)
+                {
+                    Account dbAccount = db.Accounts.FirstOrDefault(s => s.Id == account.Id);
+                    dbCar.Accounts.Add(dbAccount);
+                    db.SaveChanges();
+                }
+                
+                carDTO.Accounts = Mapper.Map<List<AccountDTO>>(dbCar.Accounts);
                 return new Response<CarDTO>(true, null, carDTO);
             }
             catch (Exception e)

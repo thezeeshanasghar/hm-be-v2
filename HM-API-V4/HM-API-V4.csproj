@@ -129,6 +129,9 @@
     <Compile Include="Car.cs">
       <DependentUpon>HMModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CarPurchase.cs">
+      <DependentUpon>HMModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\CarController.cs" />
     <Compile Include="App_Code\OnlyDateConverter.cs" />
     <Compile Include="App_Start\AutoMapperConfig.cs" />
@@ -157,13 +160,9 @@
     <Compile Include="Models\Core\AccountDTO.cs" />
     <Compile Include="Models\Core\CarDTO.cs" />
     <Compile Include="Models\Core\TransactionDTO.cs" />
-    <Compile Include="Models\Custom\CarInventoryResponseDTO.cs" />
     <Compile Include="Models\Custom\TransactionWithPreviousBalanceDTO.cs" />
     <Compile Include="Models\General\Response.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Trader.cs">
-      <DependentUpon>HMModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Transaction.cs">
       <DependentUpon>HMModel.tt</DependentUpon>
     </Compile>

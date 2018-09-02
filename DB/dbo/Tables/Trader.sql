@@ -1,7 +1,0 @@
-﻿CREATE TABLE [dbo].[Trader]
-(
-	[Id] BIGINT NOT NULL PRIMARY KEY, 
-    [Commision] DECIMAL(19, 4) NOT NULL DEFAULT 0.0, 
-    [Type] NVARCHAR(50) NOT NULL DEFAULT 'BUYER', 
-    [AccountID] BIGINT NOT NULL
-)

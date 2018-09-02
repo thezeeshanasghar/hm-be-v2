@@ -19,6 +19,14 @@
           <Property Name="Balance" Type="decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="Image" Type="nvarchar" MaxLength="150" />
         </EntityType>
+        <EntityType Name="AccountCar">
+          <Key>
+            <PropertyRef Name="CarID" />
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="CarID" Type="bigint" Nullable="false" />
+          <Property Name="AccountID" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="Car">
           <Key>
             <PropertyRef Name="Id" />
@@ -40,24 +48,22 @@
           <Property Name="Image2" Type="nvarchar" MaxLength="150" />
           <Property Name="ReceiptNumber" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="CarOwner">
-          <Key>
-            <PropertyRef Name="CarID" />
-            <PropertyRef Name="AccountID" />
-          </Key>
-          <Property Name="CarID" Type="bigint" Nullable="false" />
-          <Property Name="AccountID" Type="bigint" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Trader">
+        <EntityType Name="CarPurchase">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
-          <Property Name="Commision" Type="decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="AccountID" Type="bigint" Nullable="false" />
+          <Property Name="CarID" Type="bigint" Nullable="false" />
+          <Property Name="Buyer1ID" Type="bigint" Nullable="false" />
+          <Property Name="Buyer2ID" Type="bigint" />
+          <Property Name="Seller1ID" Type="bigint" Nullable="false" />
+          <Property Name="Seller2ID" Type="bigint" />
+          <Property Name="Witness1ID" Type="bigint" />
+          <Property Name="Witness2ID" Type="bigint" />
+          <Property Name="DealDate" Type="date" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="BuyerCom" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="SellerCom" Type="decimal" Precision="19" Scale="4" Nullable="false" />
         </EntityType>
         <EntityType Name="Transaction">
           <Key>
@@ -77,29 +83,114 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CNIC" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Contact" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Image" Type="nvarchar" MaxLength="150" />
         </EntityType>
-        <Association Name="FK_CarOwner_Account">
+        <Association Name="FK_AccountCar_Account">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
-          <End Role="CarOwner" Type="Self.CarOwner" Multiplicity="*" />
+          <End Role="AccountCar" Type="Self.AccountCar" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Account">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CarOwner">
+            <Dependent Role="AccountCar">
               <PropertyRef Name="AccountID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CarOwner_Car">
+        <Association Name="FK_AccountCar_Car">
           <End Role="Car" Type="Self.Car" Multiplicity="1" />
-          <End Role="CarOwner" Type="Self.CarOwner" Multiplicity="*" />
+          <End Role="AccountCar" Type="Self.AccountCar" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Car">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CarOwner">
+            <Dependent Role="AccountCar">
               <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarPurchase_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="Buyer1ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarPurchase_Account1">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="Buyer2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarPurchase_Account2">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="Seller1ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarPurchase_Account3">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="Seller2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarPurchase_Car">
+          <End Role="Car" Type="Self.Car" Multiplicity="1" />
+          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarPurchase_Witness">
+          <End Role="Witness" Type="Self.Witness" Multiplicity="0..1" />
+          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Witness">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="Witness1ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarPurchase_Witness1">
+          <End Role="Witness" Type="Self.Witness" Multiplicity="0..1" />
+          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Witness">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="Witness2ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -117,20 +208,46 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
         </Association>
         <EntityContainer Name="HMModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AccountCar" EntityType="Self.AccountCar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Car" EntityType="Self.Car" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Trader" EntityType="Self.Trader" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarPurchase" EntityType="Self.CarPurchase" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Witness" EntityType="Self.Witness" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CarOwner" EntityType="Self.CarOwner" store:Type="Tables" Schema="dbo">
-            
-          </EntitySet>
-          <AssociationSet Name="FK_CarOwner_Account" Association="Self.FK_CarOwner_Account">
+          <AssociationSet Name="FK_AccountCar_Account" Association="Self.FK_AccountCar_Account">
             <End Role="Account" EntitySet="Account" />
-            <End Role="CarOwner" EntitySet="CarOwner" />
+            <End Role="AccountCar" EntitySet="AccountCar" />
           </AssociationSet>
-          <AssociationSet Name="FK_CarOwner_Car" Association="Self.FK_CarOwner_Car">
+          <AssociationSet Name="FK_AccountCar_Car" Association="Self.FK_AccountCar_Car">
             <End Role="Car" EntitySet="Car" />
-            <End Role="CarOwner" EntitySet="CarOwner" />
+            <End Role="AccountCar" EntitySet="AccountCar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarPurchase_Account" Association="Self.FK_CarPurchase_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="CarPurchase" EntitySet="CarPurchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarPurchase_Account1" Association="Self.FK_CarPurchase_Account1">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="CarPurchase" EntitySet="CarPurchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarPurchase_Account2" Association="Self.FK_CarPurchase_Account2">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="CarPurchase" EntitySet="CarPurchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarPurchase_Account3" Association="Self.FK_CarPurchase_Account3">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="CarPurchase" EntitySet="CarPurchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarPurchase_Car" Association="Self.FK_CarPurchase_Car">
+            <End Role="Car" EntitySet="Car" />
+            <End Role="CarPurchase" EntitySet="CarPurchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarPurchase_Witness" Association="Self.FK_CarPurchase_Witness">
+            <End Role="Witness" EntitySet="Witness" />
+            <End Role="CarPurchase" EntitySet="CarPurchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarPurchase_Witness1" Association="Self.FK_CarPurchase_Witness1">
+            <End Role="Witness" EntitySet="Witness" />
+            <End Role="CarPurchase" EntitySet="CarPurchase" />
           </AssociationSet>
           <AssociationSet Name="FK_Transaction_Account" Association="Self.FK_Transaction_Account">
             <End Role="Account" EntitySet="Account" />
@@ -144,14 +261,42 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
         <EntityContainer Name="HMEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Accounts" EntityType="HMModel.Account" />
           <EntitySet Name="Cars" EntityType="HMModel.Car" />
-          <EntitySet Name="Traders" EntityType="HMModel.Trader" />
+          <EntitySet Name="CarPurchases" EntityType="HMModel.CarPurchase" />
           <EntitySet Name="Transactions" EntityType="HMModel.Transaction" />
           <EntitySet Name="Witnesses" EntityType="HMModel.Witness" />
+          <AssociationSet Name="FK_CarPurchase_Account" Association="HMModel.FK_CarPurchase_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="CarPurchase" EntitySet="CarPurchases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarPurchase_Account1" Association="HMModel.FK_CarPurchase_Account1">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="CarPurchase" EntitySet="CarPurchases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarPurchase_Account2" Association="HMModel.FK_CarPurchase_Account2">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="CarPurchase" EntitySet="CarPurchases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarPurchase_Account3" Association="HMModel.FK_CarPurchase_Account3">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="CarPurchase" EntitySet="CarPurchases" />
+          </AssociationSet>
           <AssociationSet Name="FK_Transaction_Account" Association="HMModel.FK_Transaction_Account">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="Transaction" EntitySet="Transactions" />
           </AssociationSet>
-          <AssociationSet Name="CarOwner" Association="HMModel.CarOwner">
+          <AssociationSet Name="FK_CarPurchase_Car" Association="HMModel.FK_CarPurchase_Car">
+            <End Role="Car" EntitySet="Cars" />
+            <End Role="CarPurchase" EntitySet="CarPurchases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarPurchase_Witness" Association="HMModel.FK_CarPurchase_Witness">
+            <End Role="Witness" EntitySet="Witnesses" />
+            <End Role="CarPurchase" EntitySet="CarPurchases" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CarPurchase_Witness1" Association="HMModel.FK_CarPurchase_Witness1">
+            <End Role="Witness" EntitySet="Witnesses" />
+            <End Role="CarPurchase" EntitySet="CarPurchases" />
+          </AssociationSet>
+          <AssociationSet Name="AccountCar" Association="HMModel.AccountCar">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="Car" EntitySet="Cars" />
           </AssociationSet>
@@ -169,8 +314,12 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Balance" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CarPurchases" Relationship="HMModel.FK_CarPurchase_Account" FromRole="Account" ToRole="CarPurchase" />
+          <NavigationProperty Name="CarPurchases1" Relationship="HMModel.FK_CarPurchase_Account1" FromRole="Account" ToRole="CarPurchase" />
+          <NavigationProperty Name="CarPurchases2" Relationship="HMModel.FK_CarPurchase_Account2" FromRole="Account" ToRole="CarPurchase" />
+          <NavigationProperty Name="CarPurchases3" Relationship="HMModel.FK_CarPurchase_Account3" FromRole="Account" ToRole="CarPurchase" />
           <NavigationProperty Name="Transactions" Relationship="HMModel.FK_Transaction_Account" FromRole="Account" ToRole="Transaction" />
-          <NavigationProperty Name="Cars" Relationship="HMModel.CarOwner" FromRole="Account" ToRole="Car" />
+          <NavigationProperty Name="Cars" Relationship="HMModel.AccountCar" FromRole="Account" ToRole="Car" />
         </EntityType>
         <EntityType Name="Car">
           <Key>
@@ -192,16 +341,32 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
           <Property Name="Image1" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Image2" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="ReceiptNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Accounts" Relationship="HMModel.CarOwner" FromRole="Car" ToRole="Account" />
+          <NavigationProperty Name="CarPurchases" Relationship="HMModel.FK_CarPurchase_Car" FromRole="Car" ToRole="CarPurchase" />
+          <NavigationProperty Name="Accounts" Relationship="HMModel.AccountCar" FromRole="Car" ToRole="Account" />
         </EntityType>
-        <EntityType Name="Trader">
+        <EntityType Name="CarPurchase">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
-          <Property Name="Commision" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AccountID" Type="Int64" Nullable="false" />
+          <Property Name="CarID" Type="Int64" Nullable="false" />
+          <Property Name="Buyer1ID" Type="Int64" Nullable="false" />
+          <Property Name="Buyer2ID" Type="Int64" />
+          <Property Name="Seller1ID" Type="Int64" Nullable="false" />
+          <Property Name="Seller2ID" Type="Int64" />
+          <Property Name="Witness1ID" Type="Int64" />
+          <Property Name="Witness2ID" Type="Int64" />
+          <Property Name="DealDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="BuyerCom" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="SellerCom" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="Account" Relationship="HMModel.FK_CarPurchase_Account" FromRole="CarPurchase" ToRole="Account" />
+          <NavigationProperty Name="Account1" Relationship="HMModel.FK_CarPurchase_Account1" FromRole="CarPurchase" ToRole="Account" />
+          <NavigationProperty Name="Account2" Relationship="HMModel.FK_CarPurchase_Account2" FromRole="CarPurchase" ToRole="Account" />
+          <NavigationProperty Name="Account3" Relationship="HMModel.FK_CarPurchase_Account3" FromRole="CarPurchase" ToRole="Account" />
+          <NavigationProperty Name="Car" Relationship="HMModel.FK_CarPurchase_Car" FromRole="CarPurchase" ToRole="Car" />
+          <NavigationProperty Name="Witness" Relationship="HMModel.FK_CarPurchase_Witness" FromRole="CarPurchase" ToRole="Witness" />
+          <NavigationProperty Name="Witness1" Relationship="HMModel.FK_CarPurchase_Witness1" FromRole="CarPurchase" ToRole="Witness" />
         </EntityType>
         <EntityType Name="Transaction">
           <Key>
@@ -222,8 +387,59 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CNIC" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Contact" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CarPurchases" Relationship="HMModel.FK_CarPurchase_Witness" FromRole="Witness" ToRole="CarPurchase" />
+          <NavigationProperty Name="CarPurchases1" Relationship="HMModel.FK_CarPurchase_Witness1" FromRole="Witness" ToRole="CarPurchase" />
         </EntityType>
+        <Association Name="FK_CarPurchase_Account">
+          <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="Buyer1ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarPurchase_Account1">
+          <End Type="HMModel.Account" Role="Account" Multiplicity="0..1" />
+          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="Buyer2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarPurchase_Account2">
+          <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
+          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="Seller1ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarPurchase_Account3">
+          <End Type="HMModel.Account" Role="Account" Multiplicity="0..1" />
+          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="Seller2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Transaction_Account">
           <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
           <End Type="HMModel.Transaction" Role="Transaction" Multiplicity="*" />
@@ -236,7 +452,43 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="CarOwner">
+        <Association Name="FK_CarPurchase_Car">
+          <End Type="HMModel.Car" Role="Car" Multiplicity="1" />
+          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarPurchase_Witness">
+          <End Type="HMModel.Witness" Role="Witness" Multiplicity="0..1" />
+          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Witness">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="Witness1ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CarPurchase_Witness1">
+          <End Type="HMModel.Witness" Role="Witness" Multiplicity="0..1" />
+          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Witness">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CarPurchase">
+              <PropertyRef Name="Witness2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AccountCar">
           <End Type="HMModel.Account" Role="Account" Multiplicity="*" />
           <End Type="HMModel.Car" Role="Car" Multiplicity="*" />
         </Association>
@@ -283,12 +535,20 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Traders">
-            <EntityTypeMapping TypeName="HMModel.Trader">
-              <MappingFragment StoreEntitySet="Trader">
-                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Commision" ColumnName="Commision" />
+          <EntitySetMapping Name="CarPurchases">
+            <EntityTypeMapping TypeName="HMModel.CarPurchase">
+              <MappingFragment StoreEntitySet="CarPurchase">
+                <ScalarProperty Name="SellerCom" ColumnName="SellerCom" />
+                <ScalarProperty Name="BuyerCom" ColumnName="BuyerCom" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="DealDate" ColumnName="DealDate" />
+                <ScalarProperty Name="Witness2ID" ColumnName="Witness2ID" />
+                <ScalarProperty Name="Witness1ID" ColumnName="Witness1ID" />
+                <ScalarProperty Name="Seller2ID" ColumnName="Seller2ID" />
+                <ScalarProperty Name="Seller1ID" ColumnName="Seller1ID" />
+                <ScalarProperty Name="Buyer2ID" ColumnName="Buyer2ID" />
+                <ScalarProperty Name="Buyer1ID" ColumnName="Buyer1ID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -309,13 +569,14 @@ warning 6002: The table/view 'HM.dbo.CarOwner' does not have a primary key defin
             <EntityTypeMapping TypeName="HMModel.Witness">
               <MappingFragment StoreEntitySet="Witness">
                 <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
                 <ScalarProperty Name="CNIC" ColumnName="CNIC" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="CarOwner" TypeName="HMModel.CarOwner" StoreEntitySet="CarOwner">
+          <AssociationSetMapping Name="AccountCar" TypeName="HMModel.AccountCar" StoreEntitySet="AccountCar">
             <EndProperty Name="Car">
               <ScalarProperty Name="Id" ColumnName="CarID" />
             </EndProperty>

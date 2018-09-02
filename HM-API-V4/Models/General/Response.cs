@@ -17,15 +17,5 @@ namespace HM_API_V4.Models
             Message = message;
             ResponseData = data;
         }
-
-        //public static Response<T> Success(T data)
-        //{
-        //    return new Response<T> { Data = data, ResponseStatus = Status.Success };
-        //}
-
-        //public static Response<T> Error(string message)
-        //{
-        //    return new Response<T> { ResponseStatus = Status.Error, Message = message };
-        //}
     }
 }

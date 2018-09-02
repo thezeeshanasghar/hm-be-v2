@@ -5,13 +5,20 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="cca688ba309145709ff0d06138d6e710" Name="Diagram1" ZoomLevel="82">
-        <EntityTypeShape EntityType="HMModel.Account" Width="1.5" PointX="0.75" PointY="3.375" />
-        <EntityTypeShape EntityType="HMModel.Car" Width="1.5" PointX="3" PointY="1.25" />
-        <EntityTypeShape EntityType="HMModel.Trader" Width="1.5" PointX="5.75" PointY="0.75" />
-        <EntityTypeShape EntityType="HMModel.Transaction" Width="1.5" PointX="3" PointY="6.25" />
-        <EntityTypeShape EntityType="HMModel.Witness" Width="1.5" PointX="5.75" PointY="3.75" />
+        <EntityTypeShape EntityType="HMModel.Account" Width="1.5" PointX="0.75" PointY="6" />
+        <EntityTypeShape EntityType="HMModel.Car" Width="1.5" PointX="3" PointY="4.125" />
+        <EntityTypeShape EntityType="HMModel.CarPurchase" Width="1.5" PointX="5.25" PointY="4.75" />
+        <EntityTypeShape EntityType="HMModel.Transaction" Width="1.5" PointX="3" PointY="14.875" />
+        <EntityTypeShape EntityType="HMModel.Witness" Width="1.5" PointX="3" PointY="9.875" />
+        <AssociationConnector Association="HMModel.FK_CarPurchase_Account" />
+        <AssociationConnector Association="HMModel.FK_CarPurchase_Account1" />
+        <AssociationConnector Association="HMModel.FK_CarPurchase_Account2" />
+        <AssociationConnector Association="HMModel.FK_CarPurchase_Account3" />
         <AssociationConnector Association="HMModel.FK_Transaction_Account" />
-        <AssociationConnector Association="HMModel.CarOwner" />
+        <AssociationConnector Association="HMModel.FK_CarPurchase_Car" />
+        <AssociationConnector Association="HMModel.FK_CarPurchase_Witness" />
+        <AssociationConnector Association="HMModel.FK_CarPurchase_Witness1" />
+        <AssociationConnector Association="HMModel.AccountCar" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
