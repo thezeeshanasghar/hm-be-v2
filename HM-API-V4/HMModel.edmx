@@ -54,16 +54,34 @@
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
           <Property Name="CarID" Type="bigint" Nullable="false" />
-          <Property Name="Buyer1ID" Type="bigint" Nullable="false" />
-          <Property Name="Buyer2ID" Type="bigint" />
-          <Property Name="Seller1ID" Type="bigint" Nullable="false" />
-          <Property Name="Seller2ID" Type="bigint" />
-          <Property Name="Witness1ID" Type="bigint" />
-          <Property Name="Witness2ID" Type="bigint" />
           <Property Name="DealDate" Type="date" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="BuyerCom" Type="decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="SellerCom" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CPBuyer">
+          <Key>
+            <PropertyRef Name="CarPurchaseID" />
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="CarPurchaseID" Type="bigint" Nullable="false" />
+          <Property Name="AccountID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CPSeller">
+          <Key>
+            <PropertyRef Name="CarPurchaseID" />
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="CarPurchaseID" Type="bigint" Nullable="false" />
+          <Property Name="AccountID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CPWitness">
+          <Key>
+            <PropertyRef Name="CarPurchaseID" />
+            <PropertyRef Name="WitnessID" />
+          </Key>
+          <Property Name="CarPurchaseID" Type="bigint" Nullable="false" />
+          <Property Name="WitnessID" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="Transaction">
           <Key>
@@ -110,54 +128,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CarPurchase_Account">
-          <End Role="Account" Type="Self.Account" Multiplicity="1" />
-          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarPurchase">
-              <PropertyRef Name="Buyer1ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CarPurchase_Account1">
-          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
-          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarPurchase">
-              <PropertyRef Name="Buyer2ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CarPurchase_Account2">
-          <End Role="Account" Type="Self.Account" Multiplicity="1" />
-          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarPurchase">
-              <PropertyRef Name="Seller1ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CarPurchase_Account3">
-          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
-          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarPurchase">
-              <PropertyRef Name="Seller2ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CarPurchase_Car">
           <End Role="Car" Type="Self.Car" Multiplicity="1" />
           <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
@@ -170,27 +140,75 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CarPurchase_Witness">
-          <End Role="Witness" Type="Self.Witness" Multiplicity="0..1" />
-          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
+        <Association Name="FK_CPBuyer_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="CPBuyer" Type="Self.CPBuyer" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Witness">
+            <Principal Role="Account">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CarPurchase">
-              <PropertyRef Name="Witness1ID" />
+            <Dependent Role="CPBuyer">
+              <PropertyRef Name="AccountID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CarPurchase_Witness1">
-          <End Role="Witness" Type="Self.Witness" Multiplicity="0..1" />
-          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="*" />
+        <Association Name="FK_CPBuyer_CarPurchase">
+          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="1" />
+          <End Role="CPBuyer" Type="Self.CPBuyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarPurchase">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CPBuyer">
+              <PropertyRef Name="CarPurchaseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CPSeller_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="CPSeller" Type="Self.CPSeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CPSeller">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CPSeller_CarPurchase">
+          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="1" />
+          <End Role="CPSeller" Type="Self.CPSeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarPurchase">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CPSeller">
+              <PropertyRef Name="CarPurchaseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CPWitness_CarPurchase">
+          <End Role="CarPurchase" Type="Self.CarPurchase" Multiplicity="1" />
+          <End Role="CPWitness" Type="Self.CPWitness" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarPurchase">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CPWitness">
+              <PropertyRef Name="CarPurchaseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CPWitness_Witness">
+          <End Role="Witness" Type="Self.Witness" Multiplicity="1" />
+          <End Role="CPWitness" Type="Self.CPWitness" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Witness">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CarPurchase">
-              <PropertyRef Name="Witness2ID" />
+            <Dependent Role="CPWitness">
+              <PropertyRef Name="WitnessID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -211,6 +229,9 @@
           <EntitySet Name="AccountCar" EntityType="Self.AccountCar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Car" EntityType="Self.Car" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CarPurchase" EntityType="Self.CarPurchase" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CPBuyer" EntityType="Self.CPBuyer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CPSeller" EntityType="Self.CPSeller" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CPWitness" EntityType="Self.CPWitness" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transaction" EntityType="Self.Transaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Witness" EntityType="Self.Witness" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_AccountCar_Account" Association="Self.FK_AccountCar_Account">
@@ -221,33 +242,33 @@
             <End Role="Car" EntitySet="Car" />
             <End Role="AccountCar" EntitySet="AccountCar" />
           </AssociationSet>
-          <AssociationSet Name="FK_CarPurchase_Account" Association="Self.FK_CarPurchase_Account">
-            <End Role="Account" EntitySet="Account" />
-            <End Role="CarPurchase" EntitySet="CarPurchase" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CarPurchase_Account1" Association="Self.FK_CarPurchase_Account1">
-            <End Role="Account" EntitySet="Account" />
-            <End Role="CarPurchase" EntitySet="CarPurchase" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CarPurchase_Account2" Association="Self.FK_CarPurchase_Account2">
-            <End Role="Account" EntitySet="Account" />
-            <End Role="CarPurchase" EntitySet="CarPurchase" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CarPurchase_Account3" Association="Self.FK_CarPurchase_Account3">
-            <End Role="Account" EntitySet="Account" />
-            <End Role="CarPurchase" EntitySet="CarPurchase" />
-          </AssociationSet>
           <AssociationSet Name="FK_CarPurchase_Car" Association="Self.FK_CarPurchase_Car">
             <End Role="Car" EntitySet="Car" />
             <End Role="CarPurchase" EntitySet="CarPurchase" />
           </AssociationSet>
-          <AssociationSet Name="FK_CarPurchase_Witness" Association="Self.FK_CarPurchase_Witness">
-            <End Role="Witness" EntitySet="Witness" />
-            <End Role="CarPurchase" EntitySet="CarPurchase" />
+          <AssociationSet Name="FK_CPBuyer_Account" Association="Self.FK_CPBuyer_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="CPBuyer" EntitySet="CPBuyer" />
           </AssociationSet>
-          <AssociationSet Name="FK_CarPurchase_Witness1" Association="Self.FK_CarPurchase_Witness1">
-            <End Role="Witness" EntitySet="Witness" />
+          <AssociationSet Name="FK_CPBuyer_CarPurchase" Association="Self.FK_CPBuyer_CarPurchase">
             <End Role="CarPurchase" EntitySet="CarPurchase" />
+            <End Role="CPBuyer" EntitySet="CPBuyer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CPSeller_Account" Association="Self.FK_CPSeller_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="CPSeller" EntitySet="CPSeller" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CPSeller_CarPurchase" Association="Self.FK_CPSeller_CarPurchase">
+            <End Role="CarPurchase" EntitySet="CarPurchase" />
+            <End Role="CPSeller" EntitySet="CPSeller" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CPWitness_CarPurchase" Association="Self.FK_CPWitness_CarPurchase">
+            <End Role="CarPurchase" EntitySet="CarPurchase" />
+            <End Role="CPWitness" EntitySet="CPWitness" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CPWitness_Witness" Association="Self.FK_CPWitness_Witness">
+            <End Role="Witness" EntitySet="Witness" />
+            <End Role="CPWitness" EntitySet="CPWitness" />
           </AssociationSet>
           <AssociationSet Name="FK_Transaction_Account" Association="Self.FK_Transaction_Account">
             <End Role="Account" EntitySet="Account" />
@@ -264,22 +285,6 @@
           <EntitySet Name="CarPurchases" EntityType="HMModel.CarPurchase" />
           <EntitySet Name="Transactions" EntityType="HMModel.Transaction" />
           <EntitySet Name="Witnesses" EntityType="HMModel.Witness" />
-          <AssociationSet Name="FK_CarPurchase_Account" Association="HMModel.FK_CarPurchase_Account">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="CarPurchase" EntitySet="CarPurchases" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CarPurchase_Account1" Association="HMModel.FK_CarPurchase_Account1">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="CarPurchase" EntitySet="CarPurchases" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CarPurchase_Account2" Association="HMModel.FK_CarPurchase_Account2">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="CarPurchase" EntitySet="CarPurchases" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CarPurchase_Account3" Association="HMModel.FK_CarPurchase_Account3">
-            <End Role="Account" EntitySet="Accounts" />
-            <End Role="CarPurchase" EntitySet="CarPurchases" />
-          </AssociationSet>
           <AssociationSet Name="FK_Transaction_Account" Association="HMModel.FK_Transaction_Account">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="Transaction" EntitySet="Transactions" />
@@ -288,17 +293,21 @@
             <End Role="Car" EntitySet="Cars" />
             <End Role="CarPurchase" EntitySet="CarPurchases" />
           </AssociationSet>
-          <AssociationSet Name="FK_CarPurchase_Witness" Association="HMModel.FK_CarPurchase_Witness">
-            <End Role="Witness" EntitySet="Witnesses" />
-            <End Role="CarPurchase" EntitySet="CarPurchases" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CarPurchase_Witness1" Association="HMModel.FK_CarPurchase_Witness1">
-            <End Role="Witness" EntitySet="Witnesses" />
-            <End Role="CarPurchase" EntitySet="CarPurchases" />
-          </AssociationSet>
           <AssociationSet Name="AccountCar" Association="HMModel.AccountCar">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="Car" EntitySet="Cars" />
+          </AssociationSet>
+          <AssociationSet Name="CPBuyer" Association="HMModel.CPBuyer">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="CarPurchase" EntitySet="CarPurchases" />
+          </AssociationSet>
+          <AssociationSet Name="CPSeller" Association="HMModel.CPSeller">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="CarPurchase" EntitySet="CarPurchases" />
+          </AssociationSet>
+          <AssociationSet Name="CPWitness" Association="HMModel.CPWitness">
+            <End Role="CarPurchase" EntitySet="CarPurchases" />
+            <End Role="Witness" EntitySet="Witnesses" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Account">
@@ -314,10 +323,6 @@
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Balance" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CarPurchases" Relationship="HMModel.FK_CarPurchase_Account" FromRole="Account" ToRole="CarPurchase" />
-          <NavigationProperty Name="CarPurchases1" Relationship="HMModel.FK_CarPurchase_Account1" FromRole="Account" ToRole="CarPurchase" />
-          <NavigationProperty Name="CarPurchases2" Relationship="HMModel.FK_CarPurchase_Account2" FromRole="Account" ToRole="CarPurchase" />
-          <NavigationProperty Name="CarPurchases3" Relationship="HMModel.FK_CarPurchase_Account3" FromRole="Account" ToRole="CarPurchase" />
           <NavigationProperty Name="Transactions" Relationship="HMModel.FK_Transaction_Account" FromRole="Account" ToRole="Transaction" />
           <NavigationProperty Name="Cars" Relationship="HMModel.AccountCar" FromRole="Account" ToRole="Car" />
         </EntityType>
@@ -341,7 +346,6 @@
           <Property Name="Image1" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Image2" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="ReceiptNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CarPurchases" Relationship="HMModel.FK_CarPurchase_Car" FromRole="Car" ToRole="CarPurchase" />
           <NavigationProperty Name="Accounts" Relationship="HMModel.AccountCar" FromRole="Car" ToRole="Account" />
         </EntityType>
         <EntityType Name="CarPurchase">
@@ -350,23 +354,14 @@
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="CarID" Type="Int64" Nullable="false" />
-          <Property Name="Buyer1ID" Type="Int64" Nullable="false" />
-          <Property Name="Buyer2ID" Type="Int64" />
-          <Property Name="Seller1ID" Type="Int64" Nullable="false" />
-          <Property Name="Seller2ID" Type="Int64" />
-          <Property Name="Witness1ID" Type="Int64" />
-          <Property Name="Witness2ID" Type="Int64" />
           <Property Name="DealDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="BuyerCom" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="SellerCom" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <NavigationProperty Name="Account" Relationship="HMModel.FK_CarPurchase_Account" FromRole="CarPurchase" ToRole="Account" />
-          <NavigationProperty Name="Account1" Relationship="HMModel.FK_CarPurchase_Account1" FromRole="CarPurchase" ToRole="Account" />
-          <NavigationProperty Name="Account2" Relationship="HMModel.FK_CarPurchase_Account2" FromRole="CarPurchase" ToRole="Account" />
-          <NavigationProperty Name="Account3" Relationship="HMModel.FK_CarPurchase_Account3" FromRole="CarPurchase" ToRole="Account" />
           <NavigationProperty Name="Car" Relationship="HMModel.FK_CarPurchase_Car" FromRole="CarPurchase" ToRole="Car" />
-          <NavigationProperty Name="Witness" Relationship="HMModel.FK_CarPurchase_Witness" FromRole="CarPurchase" ToRole="Witness" />
-          <NavigationProperty Name="Witness1" Relationship="HMModel.FK_CarPurchase_Witness1" FromRole="CarPurchase" ToRole="Witness" />
+          <NavigationProperty Name="Buyers" Relationship="HMModel.CPBuyer" FromRole="CarPurchase" ToRole="Account" />
+          <NavigationProperty Name="Sellers" Relationship="HMModel.CPSeller" FromRole="CarPurchase" ToRole="Account" />
+          <NavigationProperty Name="Witnesses" Relationship="HMModel.CPWitness" FromRole="CarPurchase" ToRole="Witness" />
         </EntityType>
         <EntityType Name="Transaction">
           <Key>
@@ -389,57 +384,7 @@
           <Property Name="CNIC" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Contact" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CarPurchases" Relationship="HMModel.FK_CarPurchase_Witness" FromRole="Witness" ToRole="CarPurchase" />
-          <NavigationProperty Name="CarPurchases1" Relationship="HMModel.FK_CarPurchase_Witness1" FromRole="Witness" ToRole="CarPurchase" />
         </EntityType>
-        <Association Name="FK_CarPurchase_Account">
-          <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
-          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarPurchase">
-              <PropertyRef Name="Buyer1ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CarPurchase_Account1">
-          <End Type="HMModel.Account" Role="Account" Multiplicity="0..1" />
-          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarPurchase">
-              <PropertyRef Name="Buyer2ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CarPurchase_Account2">
-          <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
-          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarPurchase">
-              <PropertyRef Name="Seller1ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CarPurchase_Account3">
-          <End Type="HMModel.Account" Role="Account" Multiplicity="0..1" />
-          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Account">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarPurchase">
-              <PropertyRef Name="Seller2ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Transaction_Account">
           <End Type="HMModel.Account" Role="Account" Multiplicity="1" />
           <End Type="HMModel.Transaction" Role="Transaction" Multiplicity="*" />
@@ -464,33 +409,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CarPurchase_Witness">
-          <End Type="HMModel.Witness" Role="Witness" Multiplicity="0..1" />
-          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Witness">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarPurchase">
-              <PropertyRef Name="Witness1ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CarPurchase_Witness1">
-          <End Type="HMModel.Witness" Role="Witness" Multiplicity="0..1" />
-          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Witness">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CarPurchase">
-              <PropertyRef Name="Witness2ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="AccountCar">
           <End Type="HMModel.Account" Role="Account" Multiplicity="*" />
           <End Type="HMModel.Car" Role="Car" Multiplicity="*" />
+        </Association>
+        <Association Name="CPBuyer">
+          <End Type="HMModel.Account" Role="Account" Multiplicity="*" />
+          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
+        </Association>
+        <Association Name="CPSeller">
+          <End Type="HMModel.Account" Role="Account" Multiplicity="*" />
+          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
+        </Association>
+        <Association Name="CPWitness">
+          <End Type="HMModel.CarPurchase" Role="CarPurchase" Multiplicity="*" />
+          <End Type="HMModel.Witness" Role="Witness" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -542,12 +475,6 @@
                 <ScalarProperty Name="BuyerCom" ColumnName="BuyerCom" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="DealDate" ColumnName="DealDate" />
-                <ScalarProperty Name="Witness2ID" ColumnName="Witness2ID" />
-                <ScalarProperty Name="Witness1ID" ColumnName="Witness1ID" />
-                <ScalarProperty Name="Seller2ID" ColumnName="Seller2ID" />
-                <ScalarProperty Name="Seller1ID" ColumnName="Seller1ID" />
-                <ScalarProperty Name="Buyer2ID" ColumnName="Buyer2ID" />
-                <ScalarProperty Name="Buyer1ID" ColumnName="Buyer1ID" />
                 <ScalarProperty Name="CarID" ColumnName="CarID" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -582,6 +509,30 @@
             </EndProperty>
             <EndProperty Name="Account">
               <ScalarProperty Name="Id" ColumnName="AccountID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CPBuyer" TypeName="HMModel.CPBuyer" StoreEntitySet="CPBuyer">
+            <EndProperty Name="CarPurchase">
+              <ScalarProperty Name="Id" ColumnName="CarPurchaseID" />
+            </EndProperty>
+            <EndProperty Name="Account">
+              <ScalarProperty Name="Id" ColumnName="AccountID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CPSeller" TypeName="HMModel.CPSeller" StoreEntitySet="CPSeller">
+            <EndProperty Name="CarPurchase">
+              <ScalarProperty Name="Id" ColumnName="CarPurchaseID" />
+            </EndProperty>
+            <EndProperty Name="Account">
+              <ScalarProperty Name="Id" ColumnName="AccountID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CPWitness" TypeName="HMModel.CPWitness" StoreEntitySet="CPWitness">
+            <EndProperty Name="Witness">
+              <ScalarProperty Name="Id" ColumnName="WitnessID" />
+            </EndProperty>
+            <EndProperty Name="CarPurchase">
+              <ScalarProperty Name="Id" ColumnName="CarPurchaseID" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

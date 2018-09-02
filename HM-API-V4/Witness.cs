@@ -14,22 +14,10 @@ namespace HM_API_V4
     
     public partial class Witness
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Witness()
-        {
-            this.CarPurchases = new HashSet<CarPurchase>();
-            this.CarPurchases1 = new HashSet<CarPurchase>();
-        }
-    
         public long Id { get; set; }
         public string Name { get; set; }
         public string CNIC { get; set; }
         public string Contact { get; set; }
         public string Image { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CarPurchase> CarPurchases { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CarPurchase> CarPurchases1 { get; set; }
     }
 }

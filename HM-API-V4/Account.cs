@@ -17,10 +17,6 @@ namespace HM_API_V4
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Account()
         {
-            this.CarPurchases = new HashSet<CarPurchase>();
-            this.CarPurchases1 = new HashSet<CarPurchase>();
-            this.CarPurchases2 = new HashSet<CarPurchase>();
-            this.CarPurchases3 = new HashSet<CarPurchase>();
             this.Transactions = new HashSet<Transaction>();
             this.Cars = new HashSet<Car>();
         }
@@ -35,14 +31,6 @@ namespace HM_API_V4
         public decimal Balance { get; set; }
         public string Image { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CarPurchase> CarPurchases { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CarPurchase> CarPurchases1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CarPurchase> CarPurchases2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CarPurchase> CarPurchases3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaction> Transactions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

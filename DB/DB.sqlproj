@@ -66,6 +66,9 @@
     <Build Include="dbo\Tables\Witness.sql" />
     <Build Include="dbo\Tables\AccountCar.sql" />
     <Build Include="dbo\Tables\CarPurchase.sql" />
+    <Build Include="dbo\Tables\CPBuyer.sql" />
+    <Build Include="dbo\Tables\CPSeller.sql" />
+    <Build Include="dbo\Tables\CPWitness.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB.publish.xml" />

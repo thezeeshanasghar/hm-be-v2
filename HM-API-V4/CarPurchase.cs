@@ -14,25 +14,27 @@ namespace HM_API_V4
     
     public partial class CarPurchase
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CarPurchase()
+        {
+            this.Buyers = new HashSet<Account>();
+            this.Sellers = new HashSet<Account>();
+            this.Witnesses = new HashSet<Witness>();
+        }
+    
         public long Id { get; set; }
         public long CarID { get; set; }
-        public long Buyer1ID { get; set; }
-        public Nullable<long> Buyer2ID { get; set; }
-        public long Seller1ID { get; set; }
-        public Nullable<long> Seller2ID { get; set; }
-        public Nullable<long> Witness1ID { get; set; }
-        public Nullable<long> Witness2ID { get; set; }
         public System.DateTime DealDate { get; set; }
         public decimal Price { get; set; }
         public decimal BuyerCom { get; set; }
         public decimal SellerCom { get; set; }
     
-        public virtual Account Account { get; set; }
-        public virtual Account Account1 { get; set; }
-        public virtual Account Account2 { get; set; }
-        public virtual Account Account3 { get; set; }
         public virtual Car Car { get; set; }
-        public virtual Witness Witness { get; set; }
-        public virtual Witness Witness1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Account> Buyers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Account> Sellers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Witness> Witnesses { get; set; }
     }
 }
