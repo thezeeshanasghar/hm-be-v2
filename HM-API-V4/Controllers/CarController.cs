@@ -77,37 +77,6 @@ namespace HM_API_V4.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        //// POST: api/Car
-        //[ResponseType(typeof(CarDTO))]
-        //public HttpResponseMessage PostCar(CarDTO obj)
-        //{
-        //    try
-        //    {
-        //        var dbCar = Mapper.Map<Car>(obj);
-        //        foreach (var account in obj.Owners)
-        //        {
-        //            //Transaction dbTransaction = new Transaction();
-        //            Account dbAccount = db.Accounts.FirstOrDefault(s => s.Id == account.Id);
-        //            dbCar.Accounts.Add(dbAccount);
-        //            //dbTransaction.AccountID = account.Id;
-        //            //dbTransaction.Date = DateTime.Now;
-        //            //dbTransaction.Amount = dbCar.PurchasePrice;
-        //            //dbTransaction.Number = dbCar.RegistrationNumber;
-        //            //dbTransaction.Description = "test";
-        //            //db.Transactions.Add(dbTransaction);
-        //        }
-        //        db.Cars.Add(dbCar);
-        //        db.SaveChanges();
-        //        obj.Id = dbCar.Id;
-        //        obj.Owners = Mapper.Map<List<AccountDTO>>(dbCar.Accounts);
-        //        return Request.CreateResponse(HttpStatusCode.OK, obj);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
-        //    }
-        //}
-
         public Response<CarDTO> Post()
         {
             try
@@ -139,12 +108,6 @@ namespace HM_API_V4.Controllers
                 }
                 var dbCar = Mapper.Map<Car>(carDTO);
                 dbCar.Accounts.Clear();
-                //foreach (var account in carDTO.Accounts)
-                //{
-                //    Account dbAccount = db.Accounts.FirstOrDefault(s => s.Id == account.Id);
-                //    dbAccount.Cars.Add(dbCar);
-                //   // dbCar.Accounts.Add(dbAccount); 
-                //}
                 db.Cars.Add(dbCar);
                 db.SaveChanges();
                 carDTO.Id = dbCar.Id;

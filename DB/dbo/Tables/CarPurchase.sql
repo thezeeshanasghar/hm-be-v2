@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[CarPurchase] (
-    [Id]         BIGINT          NOT NULL,
+    [Id]         BIGINT          NOT NULL IDENTITY,
     [CarID]      BIGINT          NOT NULL,
     [DealDate]   DATE            NOT NULL,
     [Price]      DECIMAL (19, 4) NOT NULL,
