@@ -159,7 +159,9 @@
     </Compile>
     <Compile Include="Models\Core\AccountDTO.cs" />
     <Compile Include="Models\Core\CarDTO.cs" />
+    <Compile Include="Models\Core\CarPurchaseDTO.cs" />
     <Compile Include="Models\Core\TransactionDTO.cs" />
+    <Compile Include="Models\Core\WitnessDTO.cs" />
     <Compile Include="Models\Custom\TransactionWithPreviousBalanceDTO.cs" />
     <Compile Include="Models\General\Response.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
