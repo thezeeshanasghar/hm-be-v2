@@ -69,6 +69,7 @@
     <Build Include="dbo\Tables\CPBuyer.sql" />
     <Build Include="dbo\Tables\CPSeller.sql" />
     <Build Include="dbo\Tables\CPWitness.sql" />
+    <Build Include="dbo\Tables\Installment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB.publish.xml" />
