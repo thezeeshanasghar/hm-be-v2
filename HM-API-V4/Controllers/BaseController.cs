@@ -23,5 +23,16 @@ namespace HM_API_V4.Controllers
             message += (ex.InnerException != null && ex.InnerException.InnerException != null) ? ("<br />" + ex.InnerException.InnerException.Message) : "";
             return message;
         }
+
+        public static void updateAllAccountBalance(HMEntities1 entities)
+        {
+            List<Account> acs = entities.Accounts.ToList<Account>();
+            foreach (var ac in acs)
+            {
+                ac.Balance = ac.Transactions.Sum(x => x.Amount);
+                entities.SaveChanges();
+            }
+            
+        }
     }
 }

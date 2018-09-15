@@ -75,6 +75,7 @@ namespace HM_API_V4.Controllers
                 using (HMEntities1 entities = new HMEntities1())
                 {
                     Transaction dbTransaction = Mapper.Map<Transaction>(transactionDTO);
+                    dbTransaction.Number = Guid.NewGuid().ToString();
                     entities.Transactions.Add(dbTransaction);
                     entities.SaveChanges();
                     transactionDTO.Id = dbTransaction.Id;

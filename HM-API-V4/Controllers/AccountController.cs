@@ -69,7 +69,7 @@ namespace HM_API_V4.Controllers
                 foreach (string file in httpRequest.Files)
                 {
                     var postedFile = httpRequest.Files[file];
-                    var path = "UploadFile/" + DateTime.Now.Ticks + postedFile.FileName;
+                    var path = "UploadFile/" + DateTime.Now.Ticks + "-" +  postedFile.FileName;
                     AccountDTO.Image = path;
                     var filePath = HttpContext.Current.Server.MapPath("~/" + path);
                     postedFile.SaveAs(filePath);
