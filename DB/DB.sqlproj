@@ -70,6 +70,7 @@
     <Build Include="dbo\Tables\CPSeller.sql" />
     <Build Include="dbo\Tables\CPWitness.sql" />
     <Build Include="dbo\Tables\Installment.sql" />
+    <None Include="TestDataScript.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DB.publish.xml" />
