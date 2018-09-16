@@ -67,23 +67,28 @@ namespace HM_API_V4.Controllers
 
                 // sellers
                 Transaction t = new Transaction();
-                t.Number = Guid.NewGuid().ToString();
-                t.Account = cpDB.Sellers.ElementAt(0);
-                t.AccountID = t.Account.Id;
-                t.Amount = cpDB.Price;
-                t.Date = DateTime.Now.Date;
-                t.Description = "Sell Car " + cpDB.Car.RegistrationNumber;
-                db.Transactions.Add(t);
-                db.SaveChanges();
+                foreach (Account seller in cpDB.Sellers) {
+                    t.Account = seller;
+                    t.AccountID = seller.Id;
+                    t.Date = DateTime.Now.Date;
 
-                t = new Transaction();
-                t.Number = Guid.NewGuid().ToString();
-                t.Account = cpDB.Sellers.ElementAt(0);
-                t.AccountID = t.Account.Id;
-                t.Amount = -1 * cpDB.SellerCom;
-                t.Date = DateTime.Now.Date;
-                t.Description = "Pay commision for car " + cpDB.Car.RegistrationNumber;
-                db.Transactions.Add(t);
+                    t.Number = Guid.NewGuid().ToString();
+                    t.Amount = cpDB.Sellers.Count == 2  ? (cpDB.Price/(decimal)2.0) : cpDB.Price;
+                    t.Description = "Sell Car " + cpDB.Car.RegistrationNumber;
+
+                    db.Transactions.Add(t);
+                    db.SaveChanges();
+
+                    t = new Transaction();
+                    t.Account = seller;
+                    t.AccountID = seller.Id;
+                    t.Date = DateTime.Now.Date;
+                    t.Number = Guid.NewGuid().ToString();
+                    t.Amount = -1 * (cpDB.Sellers.Count == 2 ? (cpDB.SellerCom / (decimal)2.0) : cpDB.SellerCom);
+                    t.Description = "Pay commision for car " + cpDB.Car.RegistrationNumber;
+                    db.Transactions.Add(t);
+                    db.SaveChanges();
+                }
 
                 // commision, TODO: HM
                 t = new Transaction();
@@ -96,29 +101,33 @@ namespace HM_API_V4.Controllers
                 db.Transactions.Add(t);
 
                 // buyers
-                t = new Transaction();
-                t.Number = Guid.NewGuid().ToString();
-                t.Account = cpDB.Buyers.ElementAt(0);
-                t.AccountID = t.Account.Id;
-                t.Amount = -1 * cpDB.Price;
-                t.Date = DateTime.Now.Date;
-                t.Description = "Buy Car " + cpDB.Car.RegistrationNumber;
-                db.Transactions.Add(t);
-                db.SaveChanges();
+
+                foreach (Account buyer in cpDB.Buyers)
+                {
+                    t = new Transaction();
+                    t.Account = buyer;
+                    t.AccountID = buyer.Id;
+                    t.Date = DateTime.Now.Date;
+                    t.Number = Guid.NewGuid().ToString();
+                    t.Amount = -1 * (cpDB.Buyers.Count == 2 ? (cpDB.Price / (decimal)2.0) : cpDB.Price);
+                    t.Description = "Buy Car " + cpDB.Car.RegistrationNumber;
+                    db.Transactions.Add(t);
+                    db.SaveChanges();
+
+                    t = new Transaction();
+                    t.Account = buyer;
+                    t.AccountID = buyer.Id;
+                    t.Date = DateTime.Now.Date;
+                    t.Amount = -1 * (cpDB.Sellers.Count == 2 ? (cpDB.BuyerCom / (decimal)2.0) : cpDB.BuyerCom);
+                    t.Number = Guid.NewGuid().ToString();
+                    t.Description = "Pay buyer commision for car " + cpDB.Car.RegistrationNumber;
+                    db.Transactions.Add(t);
+                    db.SaveChanges();
+                }
 
                 t = new Transaction();
                 t.Number = Guid.NewGuid().ToString();
-                t.Account = cpDB.Sellers.ElementAt(0);
-                t.AccountID = t.Account.Id;
-                t.Amount = -1 * cpDB.BuyerCom;
-                t.Date = DateTime.Now.Date;
-                t.Description = "Pay buyer commision for car " + cpDB.Car.RegistrationNumber;
-                db.Transactions.Add(t);
-                db.SaveChanges();
-
-                t = new Transaction();
-                t.Number = Guid.NewGuid().ToString();
-                t.Account = db.Accounts.First(x=> x.Id == 1);
+                t.Account = db.Accounts.First(x => x.Id == 1);
                 t.AccountID = t.Account.Id;
                 t.Amount = cpDB.BuyerCom;
                 t.Date = DateTime.Now.Date;

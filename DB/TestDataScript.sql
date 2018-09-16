@@ -21,3 +21,13 @@ SET IDENTITY_INSERT [dbo].[Car] OFF
 GO
 INSERT [dbo].[AccountCar] ([CarID], [AccountID]) VALUES (1, 3)
 GO
+
+DROP TABLE CPWitness
+DROP TABLE Installment
+DROP TABLE [Transaction]
+DROP TABLE AccountCar
+DROP TABLE CPBuyer
+DROP TABLE CPSeller
+DROP TABLE CarPurchase
+DROP TABLE Car
+DROP TABLE Account
