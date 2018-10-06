@@ -97,7 +97,7 @@ namespace HM_API_V4.Controllers
                 t.AccountID = t.Account.Id;
                 t.Amount = cpDB.SellerCom;
                 t.Date = DateTime.Now.Date;
-                t.Description = "Receive seller commision in deal of a car " + cpDB.Car.RegistrationNumber;
+                t.Description = "Receive seller commision in car deal" + cpDB.Car.RegistrationNumber;
                 db.Transactions.Add(t);
 
                 // buyers

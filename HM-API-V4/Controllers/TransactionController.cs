@@ -32,12 +32,17 @@ namespace HM_API_V4.Controllers
                     var transactions = db.Transactions.Where(x => EntityFunctions.TruncateTime(x.Date) == EntityFunctions.TruncateTime(now)).ToList();
                     obj.Transactions = (Mapper.Map<IEnumerable<TransactionDTO>>(transactions)).ToList();
 
-                    var previousTransactions = db.Transactions.Where(x => EntityFunctions.TruncateTime(x.Date) != EntityFunctions.TruncateTime(now));
+                    var previousTransactions = db.Transactions.Where(x => EntityFunctions.TruncateTime(x.Date) < EntityFunctions.TruncateTime(now));
                     if (previousTransactions.Count() == 0)
+                    {
                         obj.PreviousBalance = 0;
+                        obj.RemainingBalance = transactions.Sum(x => x.Amount);
+                    }
                     else
+                    {
                         obj.PreviousBalance = previousTransactions.Sum(x => x.Amount);
-
+                        obj.RemainingBalance = obj.PreviousBalance + transactions.Sum(x => x.Amount);
+                    }
 
                     return new Response<TransactionWithPreviousBalanceDTO>(true, null, obj);
                 }
