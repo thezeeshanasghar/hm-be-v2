@@ -105,7 +105,8 @@ namespace HM_API_V4.Controllers
                     var dbTransaction = entities.Transactions.Where(c => c.Id == Id).FirstOrDefault();
                     if (dbTransaction == null)
                         return new Response<TransactionDTO>(false, "Transaction not found", null);
-                    dbTransaction = Mapper.Map<TransactionDTO, Transaction>(transactionDTO, dbTransaction);
+                    dbTransaction.Amount = transactionDTO.Amount;
+                    dbTransaction.Description = transactionDTO.Description;
                     entities.SaveChanges();
                     updateAccountBalance(entities, dbTransaction);
 

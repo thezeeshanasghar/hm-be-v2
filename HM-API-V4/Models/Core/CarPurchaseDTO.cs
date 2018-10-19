@@ -25,6 +25,9 @@ namespace HM_API_V4.Models.Core
         public decimal BuyerCom { get; set; }
         public decimal SellerCom { get; set; }
 
+        public string Description { get; set; }
+        public string DealType {get;set;}
+
         public virtual List<AccountDTO> Sellers { get; set; }
         public virtual List<AccountDTO> Buyers { get; set; }
         public virtual CarDTO Car { get; set; }

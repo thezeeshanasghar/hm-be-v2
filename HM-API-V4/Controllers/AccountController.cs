@@ -27,7 +27,7 @@ namespace HM_API_V4.Controllers
             {
                 using (HMEntities1 entities = new HMEntities1())
                 {
-                    var dbVaccines = entities.Accounts.ToList();
+                    var dbVaccines = entities.Accounts.ToList().OrderBy(x=> x.Number);
                     IEnumerable<AccountDTO> AccountDTOs = Mapper.Map<IEnumerable<AccountDTO>>(dbVaccines);
                     return new Response<IEnumerable<AccountDTO>>(true, null, AccountDTOs);
                 }
@@ -99,16 +99,40 @@ namespace HM_API_V4.Controllers
                 return new Response<AccountDTO>(false, GetMessageFromExceptionObject(e), null);
             }
         }
-        public Response<AccountDTO> Put(int Id, AccountDTO AccountDTO)
+        public Response<AccountDTO> Put(int Id)
         {
             try
             {
+                var httpRequest = HttpContext.Current.Request;
+
+                var model = HttpContext.Current.Request.Form.GetValues(0);
+                string jsonContent = model[0];
+                AccountDTO AccountDTO = JsonConvert.DeserializeObject<AccountDTO>(jsonContent);
+
+                if (httpRequest.Files.Count > 0)
+                {
+                    foreach (string file in httpRequest.Files)
+                    {
+                        var postedFile = httpRequest.Files[file];
+                        var path = "UploadFile/" + DateTime.Now.Ticks + "-" + postedFile.FileName;
+                        AccountDTO.Image = path;
+                        var filePath = HttpContext.Current.Server.MapPath("~/" + path);
+                        postedFile.SaveAs(filePath);
+                    }
+                }
+                else
+                    AccountDTO.Image = "UploadFile/no-image.png";
                 using (HMEntities1 entities = new HMEntities1())
                 {
-                    var dbVaccine = entities.Accounts.Where(c => c.Id == Id).FirstOrDefault();
-                    if (dbVaccine == null)
+                    var dbAccounts = entities.Accounts.Where(c => c.Id == Id).FirstOrDefault();
+                    if (dbAccounts == null)
                         return new Response<AccountDTO>(false, "Account not found", null);
-                    dbVaccine = Mapper.Map<AccountDTO, Account>(AccountDTO, dbVaccine);
+                    dbAccounts.Name = AccountDTO.Name;
+                    dbAccounts.MobileNumber = AccountDTO.MobileNumber;
+                    dbAccounts.CNIC = AccountDTO.CNIC;
+                    dbAccounts.Address = AccountDTO.Address;
+                    dbAccounts.Image = AccountDTO.Image;
+
                     entities.SaveChanges();
                     return new Response<AccountDTO>(true, null, AccountDTO);
                 }

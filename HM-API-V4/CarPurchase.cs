@@ -28,6 +28,8 @@ namespace HM_API_V4
         public decimal Price { get; set; }
         public decimal BuyerCom { get; set; }
         public decimal SellerCom { get; set; }
+        public string Description { get; set; }
+        public string DealType { get; set; }
     
         public virtual Car Car { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

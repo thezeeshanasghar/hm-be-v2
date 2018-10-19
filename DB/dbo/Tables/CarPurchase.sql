@@ -5,6 +5,8 @@
     [Price]      DECIMAL (19, 4) NOT NULL,
     [BuyerCom]   DECIMAL (19, 4) NOT NULL,
     [SellerCom]  DECIMAL (19, 4) NOT NULL,
+    [Description] NVARCHAR(200) NULL, 
+    [DealType] NVARCHAR(50) NULL, 
     PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_CarPurchase_Car] FOREIGN KEY ([CarID]) REFERENCES [dbo].[Car] ([Id]),
 );

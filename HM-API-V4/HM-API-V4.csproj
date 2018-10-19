@@ -158,6 +158,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Installment.cs">
+      <DependentUpon>HMModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Core\AccountDTO.cs" />
     <Compile Include="Models\Core\CarDTO.cs" />
     <Compile Include="Models\Core\CarPurchaseDTO.cs" />
