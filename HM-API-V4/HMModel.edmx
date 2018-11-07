@@ -15,9 +15,10 @@
           <Property Name="MobileNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CNIC" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Created" Type="date" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="0" Nullable="false" />
           <Property Name="Balance" Type="decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="Image" Type="nvarchar" MaxLength="150" />
+          <Property Name="Updated" Type="datetime2" Precision="0" />
         </EntityType>
         <EntityType Name="AccountCar">
           <Key>
@@ -101,7 +102,7 @@
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Number" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Date" Type="datetime2" Precision="0" Nullable="false" />
           <Property Name="Amount" Type="decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="AccountID" Type="bigint" Nullable="false" />
@@ -341,6 +342,7 @@
           <NavigationProperty Name="Cars" Relationship="HMModel.AccountCar" FromRole="Account" ToRole="Car" />
           <NavigationProperty Name="CarPurchases" Relationship="HMModel.CPBuyer" FromRole="Account" ToRole="CarPurchase" />
           <NavigationProperty Name="CarPurchases1" Relationship="HMModel.CPSeller" FromRole="Account" ToRole="CarPurchase" />
+          <Property Name="Updated" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="Car">
           <Key>
@@ -464,6 +466,7 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="HMModel.Account">
               <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Balance" ColumnName="Balance" />
                 <ScalarProperty Name="Created" ColumnName="Created" />

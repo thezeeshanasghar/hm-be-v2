@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace HM_API_V4.Models
@@ -28,8 +29,11 @@ namespace HM_API_V4.Models
         public string Address { get; set; }
 
 
-        [JsonConverter(typeof(OnlyDateConverter))]
+        [JsonConverter(typeof(IsoDateTimeConverter))]
         public System.DateTime Created { get; set; }
+
+        [JsonConverter(typeof(IsoDateTimeConverter))]
+        public System.DateTime Updated { get; set; }
 
         public decimal Balance { get; set; }
 

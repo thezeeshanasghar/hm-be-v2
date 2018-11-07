@@ -2,7 +2,7 @@
 (
 	[Id] BIGINT NOT NULL PRIMARY KEY IDENTITY, 
 	[Number] NVARCHAR(50) NOT NULL, 
-    [Date] DATE NOT NULL DEFAULT GetDate(), 
+    [Date] DATETIME2(0) NOT NULL DEFAULT GetDate(), 
     [Amount] DECIMAL(19, 4) NOT NULL, 
 	[Description] NVARCHAR(200) NOT NULL,
     [AccountID] BIGINT NOT NULL, 

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace HM_API_V4.Models
 {
@@ -8,7 +9,7 @@ namespace HM_API_V4.Models
 
         public string Number { get; set; }
 
-        [JsonConverter(typeof(OnlyDateConverter))]
+        [JsonConverter(typeof(IsoDateTimeConverter))]
         public System.DateTime Date { get; set; }
 
         public decimal Amount { get; set; }

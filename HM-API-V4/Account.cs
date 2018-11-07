@@ -32,6 +32,7 @@ namespace HM_API_V4
         public System.DateTime Created { get; set; }
         public decimal Balance { get; set; }
         public string Image { get; set; }
+        public Nullable<System.DateTime> Updated { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Transaction> Transactions { get; set; }

@@ -25,7 +25,7 @@ namespace HM_API_V4.Controllers
             {
                 using (HMEntities1 db = new HMEntities1())
                 {
-                    DateTime now = DateTime.Now;
+                    DateTime now = DateTime.UtcNow;
                     if (!String.IsNullOrEmpty(date))
                         now = DateTime.ParseExact(date, "d", CultureInfo.InvariantCulture);
 
