@@ -167,6 +167,7 @@
     <Compile Include="Models\Core\TransactionDTO.cs" />
     <Compile Include="Models\Core\WitnessDTO.cs" />
     <Compile Include="Models\Custom\TransactionWithPreviousBalanceDTO.cs" />
+    <Compile Include="Models\Custom\TrasanctionWithSmsSatus.cs" />
     <Compile Include="Models\General\Response.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transaction.cs">
@@ -195,7 +196,12 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SMS\SMS.csproj">
+      <Project>{974710c4-b067-46e9-8c41-555ddf36ef32}</Project>
+      <Name>SMS</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

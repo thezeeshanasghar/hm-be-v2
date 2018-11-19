@@ -9,6 +9,8 @@ using System.Web.Http;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Globalization;
+using SMS;
+using HM_API_V4.Models.Custom;
 
 namespace HM_API_V4.Controllers
 {
@@ -92,7 +94,7 @@ namespace HM_API_V4.Controllers
 
         }
 
-        public Response<TransactionDTO> Post(TransactionDTO transactionDTO)
+        public Response<TrasanctionWithSmsSatus> Post(TransactionDTO transactionDTO)
         {
             try
             {
@@ -106,14 +108,17 @@ namespace HM_API_V4.Controllers
                     transactionDTO.Id = dbTransaction.Id;
 
                     updateAccountBalance(entities, dbTransaction);
+                    // send sms
+                    var transactionWithSmsResponse = Mapper.Map<TrasanctionWithSmsSatus>(transactionDTO);
+                    transactionWithSmsResponse.smsReponse = QuickSMS.sendSMS(dbTransaction.Account.MobileNumber, dbTransaction.Description);
+                    
 
-
-                    return new Response<TransactionDTO>(true, null, transactionDTO);
+                    return new Response<TrasanctionWithSmsSatus>(true, null, transactionWithSmsResponse);
                 }
             }
             catch (Exception e)
             {
-                return new Response<TransactionDTO>(false, GetMessageFromExceptionObject(e), null);
+                return new Response<TrasanctionWithSmsSatus>(false, GetMessageFromExceptionObject(e), null);
             }
         }
         public Response<TransactionDTO> Put(int Id, TransactionDTO transactionDTO)

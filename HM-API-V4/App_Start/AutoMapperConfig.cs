@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HM_API_V4.Models;
+using HM_API_V4.Models.Custom;
 
 namespace HM_API_V4
 {
@@ -11,6 +12,7 @@ namespace HM_API_V4
             {
                 config.CreateMap<Account, AccountDTO>().ReverseMap();
                 config.CreateMap<Transaction, TransactionDTO>().ReverseMap();
+                config.CreateMap<TrasanctionWithSmsSatus, TransactionDTO>().ReverseMap();
                 config.CreateMap<Car, CarDTO>().ReverseMap();
             });
         }
