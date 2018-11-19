@@ -15,7 +15,27 @@ namespace HM_API_V4.Controllers
     public class TransactionController : BaseController
     {
         #region C R U D
+        public static List<Transaction> getTransactions(long accountId = 0, string date = "")
+        {
+            try
+            {
+                using (HMEntities1 db = new HMEntities1())
+                {
+                    DateTime now = DateTime.UtcNow;
+                    if (!String.IsNullOrEmpty(date))
+                        now = DateTime.ParseExact(date, "d", CultureInfo.InvariantCulture);
 
+                    var transactions = db.Transactions.Where(x => x.AccountID == accountId && EntityFunctions.TruncateTime(x.Date)
+                        <= EntityFunctions.TruncateTime(now)).ToList();
+                    return transactions;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+        } 
 
         public Response<TransactionWithPreviousBalanceDTO> GET(int accountId=0, string date="")
         {
