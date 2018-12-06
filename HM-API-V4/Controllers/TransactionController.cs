@@ -37,9 +37,9 @@ namespace HM_API_V4.Controllers
                 throw e;
             }
 
-        } 
+        }
 
-        public Response<TransactionWithPreviousBalanceDTO> GET(int accountId=0, string date="")
+        public Response<TransactionWithPreviousBalanceDTO> GET(int accountId = 0, string date = "")
         {
             //TODO: return data should entertain accountId parameter as well
             TransactionWithPreviousBalanceDTO obj = new TransactionWithPreviousBalanceDTO();
@@ -108,10 +108,12 @@ namespace HM_API_V4.Controllers
                     transactionDTO.Id = dbTransaction.Id;
 
                     updateAccountBalance(entities, dbTransaction);
-                    // send sms
+
                     var transactionWithSmsResponse = Mapper.Map<TrasanctionWithSmsSatus>(transactionDTO);
-                    transactionWithSmsResponse.smsReponse = QuickSMS.sendSMS(dbTransaction.Account.MobileNumber, dbTransaction.Description);
-                    
+                    if (!String.IsNullOrEmpty(dbTransaction.Account.MobileNumber))
+                    {
+                        SendMessage(dbTransaction, transactionWithSmsResponse);
+                    }
 
                     return new Response<TrasanctionWithSmsSatus>(true, null, transactionWithSmsResponse);
                 }
@@ -121,6 +123,17 @@ namespace HM_API_V4.Controllers
                 return new Response<TrasanctionWithSmsSatus>(false, GetMessageFromExceptionObject(e), null);
             }
         }
+
+        private static void SendMessage(Transaction dbTransaction, TrasanctionWithSmsSatus transactionWithSmsResponse)
+        {
+            // send sms
+            var message = dbTransaction.Description;
+            transactionWithSmsResponse.smsReponse = QuickSMS.sendSMS(dbTransaction.Account.MobileNumber, message);
+
+            message = "Amount: " + dbTransaction.Amount + ", \nNow Balance is:  " + Convert.ToInt32(dbTransaction.Account.Balance);
+            transactionWithSmsResponse.smsReponse = QuickSMS.sendSMS(dbTransaction.Account.MobileNumber, message);
+        }
+
         public Response<TransactionDTO> Put(int Id, TransactionDTO transactionDTO)
         {
             try
@@ -133,8 +146,15 @@ namespace HM_API_V4.Controllers
                     dbTransaction.Amount = transactionDTO.Amount;
                     dbTransaction.Description = transactionDTO.Description;
                     entities.SaveChanges();
+
                     updateAccountBalance(entities, dbTransaction);
 
+                    var transactionWithSmsResponse = Mapper.Map<TrasanctionWithSmsSatus>(transactionDTO);
+                    if (!String.IsNullOrEmpty(dbTransaction.Account.MobileNumber))
+                    {
+                        SendMessage(dbTransaction, transactionWithSmsResponse);
+                        
+                    }
                     return new Response<TransactionDTO>(true, null, transactionDTO);
                 }
             }
