@@ -186,5 +186,20 @@ namespace HM_API_V4.Controllers
 
             return Ok(carDto);
         }
+
+        [Route("api/car/{id}")]
+        public IHttpActionResult getCarById(int id)
+        {
+            var c = db.Cars.Where(x=>x.Id==id).FirstOrDefault();
+            CarDTO carDto = Mapper.Map<CarDTO>(c);
+            if (carDto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(carDto);
+
+
+        }
     }
 }
